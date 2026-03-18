@@ -40,7 +40,6 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -55,8 +54,9 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid Password" });
     }
 
+    // 🔥 tokens
     const accessToken = jwt.sign(
-      { id: user._id , role: user.role},
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "15m" }
     );
@@ -64,18 +64,29 @@ exports.login = async (req, res) => {
     const refreshToken = jwt.sign(
       { id: user._id, role: user.role },
       process.env.REFRESH_SECRET,
-      { expiresIn: "7d" 
-
-      }
+      { expiresIn: "7d" }
     );
 
+    // 🔥 set cookies
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: false,        // production me true
+      sameSite: "lax",
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+
+    // 🔥 send only safe data
     res.json({
-      accessToken,
-      refreshToken,
-      user
+      message: "Login successful",
+      user,
     });
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "Server error" });
   }
 };

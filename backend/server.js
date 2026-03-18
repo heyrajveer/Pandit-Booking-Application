@@ -9,10 +9,16 @@ const userRoutes =require("./routes/userRoutes");
 dotenv.config();
 const app =express();
 
+const cookieParser = require("cookie-parser");
 
+app.use(cookieParser()); // 👈 must
 //middel ware
+
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}));
 app.use(express.json());
-app.use(cors());
 
 //databse connect
 connectDB();
@@ -26,6 +32,10 @@ app.use("/api/user",userRoutes);
 app.get("/",(req,res)=>{
     res.send("server is running");
 })
+
+app.get("/api/test", (req, res) => {
+  res.json({ message: "API working successfully 🚀" });
+});
   
 const port =process.env.PORT ||3000;
 app.listen(port, () => {

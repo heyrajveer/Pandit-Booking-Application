@@ -28,7 +28,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/pandit", panditRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/user",userRoutes);
-
 app.get("/",(req,res)=>{
     res.send("server is running");
 })

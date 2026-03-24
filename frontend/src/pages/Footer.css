@@ -1,0 +1,17 @@
+.footer {
+  background: linear-gradient(135deg, #ff7a18, #ffb347);
+}
+
+/* Icons */
+.footer-icon {
+  margin: 0 10px;
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-icon:hover {
+  color: #fff7ed;
+  transform: translateY(-2px);
+}

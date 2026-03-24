@@ -4,46 +4,75 @@ const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   try {
-
     const { name, email, password, role, city, phone } = req.body;
 
-    const userExist = await User.findOne({ email });
-
-    if (userExist) {
+    // 🔹 Required fields
+    if (!name || !email || !password) {
       return res.status(400).json({
-        message: "User already exists"
+        message: "All required fields are missing ❌"
       });
     }
 
-    const hashPassword = await bcrypt.hash(password, 10);
+    const normalizedEmail = email.toLowerCase();
 
+    // 🔹 Check user exists
+    const userExist = await User.findOne({ email: normalizedEmail });
+
+    if (userExist) {
+      return res.status(400).json({
+        message:"User already exists"
+      });
+    }
+    
+
+    // 🔹 Hash password
+    // const hashPassword = await bcrypt.hash(password, 10);
+
+    // 🔹 Create user
     const user = new User({
       name,
-      email,
-      password: hashPassword,
+      email: normalizedEmail,
+      // password: hashPassword,
+      password,
       role,
       city,
       phone
     });
 
-    await user.save();
 
+    await user.save();
+    // console.log("BODY 👉", user);
     res.status(201).json({
-      message: "User registered successfully"
+      message:"User registered successfully"
     });
 
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+
+    // 🔹 Schema validation error
+    if (err.name === "ValidationError") {
+      return res.status(400).json({
+        message: Object.values(err.errors)[0].message,
+      });
+    }
+
+    res.status(500).json({
+      message: err.message || "Server error",
+    });
   }
 };
 
-
+  
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+      // console.log("BODY 👉", req.body);
     const user = await User.findOne({ email });
 
+     if (!email || !password) {
+      return res.status(400).json({
+        message: "All required fields are missing ❌"
+      });
+    }
     if (!user) {
       return res.status(400).json({ message: "Invalid Email" });
     }
@@ -89,4 +118,9 @@ exports.login = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
+};
+
+exports.logout = (req, res) => {
+  res.clearCookie("token"); // 🔥 remove cookie
+  res.json({ message: "Logged out successfully" });
 };

@@ -1,15 +1,24 @@
 
+import { ToastContainer } from 'react-toastify'
 import './App.css'
+import AuthPage from './pages/Auth/AuthPage'
+import Register from './pages/Auth/Register'
 import AppRoutes from './routes/AppRoutes'
+import { BrowserRouter } from 'react-router-dom'
+import Navbar from './compoments/Navbar'
+import Footer from './pages/footer'
 
 function App() {
 
 
   return (
-    <>
-     <h1 align="center" >hello from main</h1>
+    <BrowserRouter>
+    <ToastContainer/> 
+     <Navbar/>
      <AppRoutes/>
-    </>
+     {/* <AuthPage/> */}
+      <Footer/>
+    </BrowserRouter>
   )
 }
 

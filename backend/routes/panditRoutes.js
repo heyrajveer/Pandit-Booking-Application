@@ -5,23 +5,28 @@ const verifyToken = require("../middlewares/authMiddleware");
 const roleMiddleware = require("../middlewares/roleMiddleware");
 const panditController = require("../controllers/panditController");
 
-// pandit creation
-router.post("/create", verifyToken, roleMiddleware("pandit"), panditController.createPandit);
 
 // get all pandits
 router.get("/", panditController.getPandits);
 
-// get pandit by id
-router.get("/:id", panditController.getPanditById);
-
+// pandit creation
+router.post("/create", verifyToken, roleMiddleware("pandit"), panditController.createPandit);
 
 //personal dashboard pandit profle 
-router.get("/profile/me", verifyToken, roleMiddleware("pandit"), panditController.getMyPanditProfile);
+router.get("/profile", verifyToken, roleMiddleware("pandit"), panditController.getMyPanditProfile);
 
 // update pandit profile
-router.put("/profile/update", verifyToken, roleMiddleware("pandit"), panditController.updatePanditProfile);
+router.put("/update", verifyToken, roleMiddleware("pandit"), panditController.updatePanditProfile);
+
+
+
+
+
+// get pandit by id
+router.get("/:id", panditController.getPanditById);
 
 // delete pandit
 router.delete("/:id", verifyToken, roleMiddleware("pandit"), panditController.deletePandit);
 
+router.get("/",panditController.getPanditByCity);
 module.exports = router;

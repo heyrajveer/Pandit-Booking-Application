@@ -1,0 +1,31 @@
+/* 🔥 Background (mandir vibe) */
+
+/* 🔥 Title */
+.auth-title {
+  color: #FF6F00;
+  font-weight: bold;
+}
+
+/* 🔥 Button */
+.btn-theme {
+  background: #FF6F00;
+  color: white;
+  border: none;
+}
+
+.btn-theme:hover {
+  background: #e65c00;
+}
+.auth-bg {
+  background: url("https://images.unsplash.com/photo-1764304589223-30bfbfdaa9ef?auto=format&fit=crop&w=1470&q=80");
+  background-size: cover;   /* 🔥 change here */
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+  background-color: #fff; /* empty space fill */
+}
+.auth-card {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+}

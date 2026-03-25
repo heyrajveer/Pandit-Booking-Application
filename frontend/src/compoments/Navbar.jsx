@@ -20,8 +20,8 @@ function Navbar() {
     left: 0,
     width: "100%",
     height: "76px",
-    background: "#ffffff",
-    borderBottom: "1px solid #ddd",
+    background: "#9dfbea",
+    borderBottom: "1px solid #07f5d5",
     zIndex: 1000
   }}
 >

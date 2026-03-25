@@ -21,12 +21,12 @@ function AppRoutes() {
     <Routes>
        <Route path='/' element={<Home/>}/>
        <Route path='/about' element={<About/>}/>
-          <Route path='/Contact' element={<Contact/>}/>
+        <Route path='/Contact' element={<Contact/>}/>
         <Route path="/test" element={<TestApi/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
-        <Route path="/auth" element={<AuthPage />} />
-
+        <Route path="/auth" element={<AuthPage/>} />
+re
 
         <Route path="/user-dashboard" element={<UserDashboard/>}/>
          <Route path="/user-profile"element={<UserProfile/>}/>

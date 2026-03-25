@@ -22,88 +22,133 @@ function UserDashboard() {
     }
   };
 
-  return (
-      <div style={{ marginTop: "70px" }}>
-    <div
-      className="d-flex flex-column align-items-center"
-      style={{
-        background: "linear-gradient(135deg, #11445d, #80a0a8)",
-        minHeight: "82vh",
-        color: "white"
-      }}
-    >
-      {/* 🔝 Welcome Section */}
-      <div className="text-center mt-5">
-        <h1> 👋Welcome 👋</h1>
-        <h1>{user?.name}</h1>
+return (
+  <div style={{marginTop:"70px",
+  
+  }}>
+  <div className=" 0"
+   style={{ minHeight: "82vh",
+    background:"rgb(203, 231, 235)"
+    }}>
+
+    {/* 🔥 Content */}
+    <div className="container py-5" style={{background:"rgba(151, 230, 228, 0.62)"}}>
+
+      {/* 👤 Profile Section */}
+      <div className="card shadow-sm mb-4 p-4"
+      style={{background:"linear-gradient(to right, #38a1bb, #6dd5ed)"}}
+      >
+        <div className="d-flex align-items-center">
+
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png"
+            alt="user"
+            className="rounded-circle me-3"
+            width="70"
+          />
+
+          <div>
+            <h3 className="mb-1">{user?.name}</h3>
+            <p className="text-muted small mb-0">
+             <h4> Welcome back! Manage your bookings and explore pandits easily.</h4>
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* 🔘 Center Card */}
-      <div
-        className="card shadow-lg p-4 text-center mt-5"
-        style={{
-          width: "350px",
-          borderRadius: "15px",
-          backgroundColor: "white",
-          color: "black"
-        }}
-      >
-        <h5 className="mb-4">Dashboard</h5>
+      {/* 🔲 Cards */}
+      <div className="row g-4">
 
-        <button
-          className="btn btn-gradient mb-3 w-100"
-          onClick={() => navigate("/user-profile")}
-        >
-          👤 Profile
-        </button>
+        {/* Profile */}
+        <div className="col-md-4">
+          <div className="card shadow-sm h-100 text-center p-3">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/747/747376.png"
+              alt="profile"
+              width="60"
+              className="mx-auto mb-2"
+            />
+            <h5>Profile</h5>
+            <p className="text-muted small">
+              View and update your personal details
+            </p>
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/user-profile")}
+            >
+              Go to Profile
+            </button>
+          </div>
+        </div>
 
-        <button
-          className="btn btn-gradient mb-3 w-100"
-          onClick={() => navigate("/pandits")}
-        >
-          🔍 View Pandits
-        </button>
+        {/* Pandits */}
+        <div className="col-md-4">
+          <div className="card shadow-sm h-100 text-center p-3">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
+              alt="pandit"
+              width="60"
+              className="mx-auto mb-2"
+            />
+            <h5>Find Pandits</h5>
+            <p className="text-muted small">
+              Browse and book verified pandits
+            </p>
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/pandits")}
+            >
+              View Pandits
+            </button>
+          </div>
+        </div>
 
-        <button
-          className="btn btn-gradient mb-3 w-100"
-          onClick={() => navigate("/my-bookings")}
-        >
-          📦 My Bookings
-        </button>
+        {/* Bookings */}
+        <div className="col-md-4">
+          <div className="card shadow-sm h-100 text-center p-3">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png"
+              alt="booking"
+              width="60"
+              className="mx-auto mb-2"
+            />
+            <h5>My Bookings</h5>
+            <p className="text-muted small">
+              Track your past and upcoming bookings
+            </p>
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/my-bookings")}
+            >
+              View Bookings
+            </button>
+          </div>
+        </div>
 
+      </div>
+
+      {/* 🚀 Extra Section (Professional Touch) */}
+      <div className="mt-5 text-center">
+        <h5 className="fw-semibold">Need Help?</h5>
+        <p className="text-muted small">
+          Our platform helps you connect with trusted pandits easily and quickly.
+        </p>
+      </div>
+
+      {/* Logout */}
+      <div className="text-center mt-3">
         <button
-          className="btn btn-danger w-100"
+          className="btn btn-danger px-4"
           onClick={handleLogout}
         >
-          🚪 Logout
+          Logout
         </button>
       </div>
 
-      {/* 🎨 Styling */}
-      <style>
-        {`
-          .btn-gradient {
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
-            color: white;
-            border: none;
-            transition: all 0.3s ease;
-          }
-
-          .btn-gradient:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            background: linear-gradient(135deg, #4338ca, #4f46e5);
-          }
-
-          .btn-danger:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-          }
-        `}
-      </style>
     </div>
-    </div>
-  );
+  </div>
+  </div>
+);
 }
 
 export default UserDashboard;

@@ -35,54 +35,53 @@ function UserProfile() {
     }
   };
 
-  return (
-    <div style={{ marginTop: "70px" }}>
-    <div
-      style={{
-        background: "linear-gradient(135deg, #e9e4e0, #292622)",
-        minHeight: "82vh"
-      }}
-    >
-      {/* 🔝 Header */}
-      <div className="container-fluid bg-secondary py-2 px-4 d-flex justify-content-between align-items-center">
-        <h3 className="text-white fw-bold m-0">👤 User Profile</h3>
+return (
+  <div style={{marginTop:"70px"}}>
+  <div className="bg-light" style={{height:"82vh" }}>
 
-        {/* 👉 Right Logo */}
-        <img
-          src="https://img.freepik.com/premium-photo/immersive-3d-cartoon-avatar-captivating-frontprofile-view-10yearold-white-male-with-black-h_983420-10038.jpg?w=2000"
-          alt="profile"
-          style={{
-            width: "50px",
-            borderRadius: "50%",
-            border: "2px solid white",
-            background: "white"
-          }}
-        />
-      </div>
+    {/* 🔝 Navbar */}
+    <nav className="navbar navbar-dark bg-secondary px-4 shadow-sm">
+      <span className="navbar-brand fw-semibold">👤 User Profile</span>
 
-      {/* 🧾 Form Section */}
-      <div className="container d-flex justify-content-center align-items-center mt-5">
-        <div className="row justify-content-center w-100">
+      <img
+        src="https://img.freepik.com/premium-photo/immersive-3d-cartoon-avatar-captivating-frontprofile-view-10yearold-white-male-with-black-h_983420-10038.jpg?w=2000"
+        alt="profile"
+        className="rounded-circle border"
+        width="45"
+      />
+    </nav>
 
-          {/* 🖼 Left Image */}
-          <div className="col-md-5 text-center mb-5">
-            <div className="image-box">
-              <img
-                src="https://img.freepik.com/premium-photo/immersive-3d-cartoon-avatar-captivating-frontprofile-view-10yearold-white-male-with-black-h_983420-10038.jpg?w=2000"
-                alt="user"
-                className="img-fluid"
-              />
-            </div>
+    {/* 🔥 Main Content */}
+    <div className="container py-5">
+
+      <div className="row align-items-center justify-content-center g-5">
+
+        {/* 🖼 LEFT SIDE */}
+        <div className="col-lg-5 text-center">
+          <div className="card border-0 shadow-sm p-3">
+            <img
+              src="https://img.freepik.com/premium-photo/immersive-3d-cartoon-avatar-captivating-frontprofile-view-10yearold-white-male-with-black-h_983420-10038.jpg?w=2000"
+              alt="user"
+              className="img-fluid rounded"
+              style={{ maxHeight: "300px", objectFit: "cover" }}
+            />
+
+            <h6 className="mt-3 mb-1">{userr?.name}</h6>
+            <p className="text-muted small mb-0">{userr?.email}</p>
           </div>
+        </div>
 
-          {/* 📋 Right Form */}
-          <div className="col-md-5">
-            <div className="card shadow-lg p-4 form-box">
+        {/* 📋 RIGHT FORM */}
+        <div className="col-lg-6 col-md-10">
 
-              <h5 className="fw-bold text-warning mb-3">Basic Info</h5>
+          <div className="card border-0 shadow-sm">
+            <div className="card-body p-4">
 
+              <h5 className="fw-semibold mb-4">Edit Profile</h5>
+
+              {/* Name */}
               <div className="mb-3">
-                <label className="form-label">Name</label>
+                <label className="form-label small">Name</label>
                 <input
                   className="form-control"
                   value={user.name || ""}
@@ -92,8 +91,9 @@ function UserProfile() {
                 />
               </div>
 
+              {/* Email */}
               <div className="mb-3">
-                <label className="form-label">Email</label>
+                <label className="form-label small">Email</label>
                 <input
                   className="form-control"
                   value={user.email || ""}
@@ -101,8 +101,9 @@ function UserProfile() {
                 />
               </div>
 
+              {/* Phone */}
               <div className="mb-3">
-                <label className="form-label">Phone</label>
+                <label className="form-label small">Phone</label>
                 <input
                   className="form-control"
                   value={user.phone || ""}
@@ -112,8 +113,9 @@ function UserProfile() {
                 />
               </div>
 
-              <div className="mb-3">
-                <label className="form-label">City</label>
+              {/* City */}
+              <div className="mb-4">
+                <label className="form-label small">City</label>
                 <input
                   className="form-control"
                   value={user.city || ""}
@@ -123,66 +125,24 @@ function UserProfile() {
                 />
               </div>
 
+              {/* Button */}
               <button
-                className="btn btn-custom w-100 mt-2"
+                className="btn btn-primary w-100 fw-semibold"
                 onClick={handleUpdate}
               >
                 Update Profile
               </button>
+
             </div>
           </div>
 
         </div>
+
       </div>
-</div>
-      {/* 🎨 Styling */}
-      <style>
-        {`
-          .image-box {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: 0.3s;
-          }
-
-          .image-box img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 15px;
-          }
-
-          .image-box:hover {
-            transform: translateY(-5px);
-          }
-
-          .form-box {
-            border-radius: 20px;
-            transition: 0.3s;
-          }
-
-          .form-box:hover {
-            transform: translateY(-5px);
-          }
-
-          .btn-custom {
-            background: linear-gradient(135deg, #ff7a18, #ffb347);
-            color: white;
-            font-weight: 600;
-            border: none;
-            transition: 0.3s;
-          }
-
-          .btn-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-            background: linear-gradient(135deg, #ff6a00, #ff9e2c);
-          }
-        `}
-      </style>
     </div>
-  );
+  </div>
+  </div>
+);
 }
 
 export default UserProfile;

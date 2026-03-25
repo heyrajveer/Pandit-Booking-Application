@@ -56,13 +56,13 @@ function PanditProfile() {
     <div style={{ marginTop: "70px" }}>
     <div
       style={{
-        background: "linear-gradient(135deg, #ff9933, #ffcc80)",
+        background: "linear-gradient(135deg, #c8c5c5, #fafdff)",
         minHeight: "82vh",
       }}
     >
       {/* 🔝 Header */}
       <div className="container-fluid  bg-danger  py-1 px- d-flex justify-content-between align-items-center">
-        <h3 className="text-white m-0">🧘 Pandit Profile</h3>
+        <h3 className=" text-white m-0 ">🧘 Pandit Profile</h3>
 
         {/* 👉 Right Logo */}
         <img
@@ -81,7 +81,7 @@ function PanditProfile() {
       <div className="container d-flex justify-content-center mt-4 bg-red">
         <div className="p-2">
           <img
-            src="https://img.freepik.com/premium-photo/cartoon-character-yellow-tuk_761066-33424.jpg"
+            src="https://img.freepik.com/premium-photo/hindu-pandit-3d-character-hindu-pujari-illustration-hindu-dress-dhoti-man_714173-1111.jpg?w=2000"
             alt="pandit"
             style={{
               width: "450px",

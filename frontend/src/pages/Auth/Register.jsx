@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { registerUser } from "../../api/authApi";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
-function Register() {
-  const navigate = useNavigate(); // ✅ FIXED
+function Register({ setIsLogin }) {
 
   const [form, setForm] = useState({
     name: "",
@@ -21,12 +19,11 @@ function Register() {
     try {
       const res = await registerUser(form);
 
-      // ✅ SUCCESS
       if (res.data.message === "User registered successfully") {
         toast.success("Registered successfully ✅");
 
         setTimeout(() => {
-          navigate("/auth"); // 🔥 redirect to login
+          setIsLogin(true); // 🔥 switch to login
         }, 1000);
       }
 
@@ -34,12 +31,11 @@ function Register() {
       const message =
         err.response?.data?.message || "Something went wrong ❌";
 
-      // ✅ USER ALREADY EXISTS
       if (message === "User already exists") {
         toast.error("User already exists ❌");
 
         setTimeout(() => {
-          navigate("/auth"); // 🔥 redirect anyway
+          setIsLogin(true); // 🔥 switch to login
         }, 1000);
       } else {
         toast.error(message);

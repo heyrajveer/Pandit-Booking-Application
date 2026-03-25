@@ -17,14 +17,11 @@ exports.register = async (req, res) => {
 
     // 🔹 Check user exists
     const userExist = await User.findOne({ email: normalizedEmail });
-
-    if (userExist) {
-      return res.status(400).json({
-        message:"User already exists"
-      });
-    }
-    
-
+   if (userExist) {
+  return res.status(400).json({
+    message: "User already exists"
+  });
+}
     // 🔹 Hash password
     // const hashPassword = await bcrypt.hash(password, 10);
 

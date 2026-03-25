@@ -28,5 +28,5 @@ router.get("/:id", panditController.getPanditById);
 // delete pandit
 router.delete("/:id", verifyToken, roleMiddleware("pandit"), panditController.deletePandit);
 
-router.get("/",panditController.getPanditByCity);
+router.get("/city/search",panditController.getPanditByCity);
 module.exports = router;

@@ -8,12 +8,13 @@ function Home() {
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
   const handleSearch = () => {
-    if (!city) {
-      alert("Please enter city");
-      return;
-    }
-    navigate(`/pandits?city=${city}`);
-  };
+  if (!city) {
+    alert("Please enter city");
+    return;
+  }
+  console.log();
+  navigate(`/pandits?city=${city}`);
+};
 
   return (
     <div style={{marginTop:"50px"}}>

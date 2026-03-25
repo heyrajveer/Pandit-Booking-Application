@@ -13,5 +13,8 @@ export const getMyPanditProfile = () => API.get("/pandit/profile");
 export const createPanditProfile = (data) => API.post("/pandit/create");
 
 // 🔹 update pandit profile
-export const updatePanditProfile = (data) =>
-  API.put("/pandit/update", data);
+export const updatePanditProfile = (data) => API.put("/pandit/update", data);
+
+export const getPanditByCity = (city) => {
+  return API.get(`/pandit/city/search?city=${city}`);
+};

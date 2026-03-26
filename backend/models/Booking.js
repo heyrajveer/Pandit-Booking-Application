@@ -4,16 +4,34 @@ const bookingSchema = new mongoose.Schema({
 
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
+     required: true
   },
 
   panditId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Pandit"
+    ref: "Pandit",
+    required: true
   },
 
-  date: String,
-  time: String,
+  date: {
+    type: String,
+    required: true
+  },
+
+  time: {
+    type: String,
+    required: true
+  },
+
+  address: {
+    type: String,
+    required: true
+  },
+
+  phone: {
+    type: String
+  },
 
   status: {
     type: String,

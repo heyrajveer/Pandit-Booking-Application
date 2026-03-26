@@ -48,7 +48,7 @@ return (
           />
 
           <div>
-            <h3 className="mb-1">{user?.name}</h3>
+            <h3 className="mb-1">{user?.name.toUpperCase()}</h3>
             <p className="text-muted small mb-0">
              <h4> Welcome back! Manage your bookings and explore pandits easily.</h4>
             </p>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getPanditProfileById } from "../../api/panditApi";
 
 function PanditDetails() {
   const { id } = useParams();
   const [pandit, setPandit] = useState(null);
-
+  const navigate =useNavigate();
   useEffect(() => {
     const fetchPandit = async () => {
       try {
@@ -77,7 +77,12 @@ function PanditDetails() {
 
             {/* Buttons */}
             <div className="d-flex gap-3 mt-4">
-              <button className="btn btn-warning px-4">Book Now</button>
+              <button
+                className="btn btn-warning px-4"
+                onClick={() => navigate(`/booking/${pandit._id}`)}
+              >
+                Book Now
+              </button>
 
               <a
                 href={`tel:${pandit.userId?.phone}`}

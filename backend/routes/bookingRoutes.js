@@ -3,7 +3,8 @@ const router = express.Router();
 const verifyToken = require("../middlewares/authMiddleware");
 const {
   createBooking,
-  getBookings
+  getBookings,
+  updateBookingStatus
 } = require("../controllers/bookingController");
 
 
@@ -11,6 +12,8 @@ const {
 router.post("/create", verifyToken, createBooking);
 
 // get all bookings
-router.get("/", verifyToken, getBookings);
+router.get("/my-bookings", verifyToken, getBookings);
+//update  request status by pandit
+router.patch("/:id/status", verifyToken, updateBookingStatus);
 
 module.exports = router;

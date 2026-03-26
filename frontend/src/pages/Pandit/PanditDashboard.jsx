@@ -137,7 +137,7 @@ return (
 
                   <button
                     className="btn btn-warning w-100"
-                    onClick={() => navigate("/pandit-bookings")}
+                    onClick={() => navigate("/pandit/requests")}
                   >
                     View Bookings
                   </button>

@@ -11,10 +11,12 @@ import PageNotFound from '../compoments/PageNotFound'
 import Home from '../pages/Home'
 import PanditList from '../pages/Pandit/PanditList'
 import PanditDetails from '../pages/Pandit/PanditDetails'
-import Booking from '../pages/Booking/Booking'
 import PanditProfile from '../pages/Pandit/PanditProfile'
 import About from '../pages/About'
 import Contact from '../pages/Contact'
+import BookingPage from '../pages/Booking/BookingPage'
+import MyBooking from '../pages/Booking/MyBooking'
+import PanditRequest from '../pages/Booking/PanditRequest'
 
 function AppRoutes() {
   return (
@@ -44,7 +46,11 @@ re
 
 
         {/* booking */}
-        <Route path="/my-bookings" element={< Booking/>}/>
+        <Route path="/booking/:id" element={< BookingPage/>}/>
+        {/* mybookings */}
+         <Route path="/my-bookings" element={< MyBooking/>}/>
+          {/* mybookings */}
+         <Route path="/pandit/requests" element={<PanditRequest/>}/>
     </Routes>
   )
 }

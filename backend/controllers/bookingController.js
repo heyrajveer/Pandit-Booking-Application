@@ -28,35 +28,62 @@ exports.getBookings = async (req, res) => {
   try {
     let bookings;
 
-    // 🔹 USER
+    console.log("REQ.USER:", req.user);
+
+    // 🔹 USER → see own bookings
     if (req.user.role === "user") {
       bookings = await Booking.find({ userId: req.user.id })
-        .populate("panditId");
+        .populate({
+          path: "panditId",
+          populate: {
+            path: "userId",
+            select: "name city phone"
+          }
+        });
     }
-    
 
-    // 🔹 PANDIT (FIXED)
+    // 🔹 PANDIT → see assigned bookings
     else if (req.user.role === "pandit") {
-
-
       const pandit = await Pandit.findOne({ userId: req.user.id });
+
+      console.log("PANDIT:", pandit);
 
       if (!pandit) {
         return res.status(404).json({ message: "Pandit profile not found" });
       }
 
       bookings = await Booking.find({ panditId: pandit._id })
-        .populate("userId");
+        .populate({
+          path: "userId",
+          select: "name email"
+        });
     }
 
-    // 🔹 ADMIN
+    // 🔹 ADMIN → see all
     else {
       bookings = await Booking.find()
         .populate("userId")
         .populate("panditId");
     }
 
-    res.json(bookings);
+    res.status(200).json(bookings);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.updateBookingStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    res.json(booking);
 
   } catch (error) {
     res.status(500).json({ error: error.message });

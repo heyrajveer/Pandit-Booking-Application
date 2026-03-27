@@ -24,16 +24,23 @@ function UserProfile() {
     };
 
     fetchUser();
-  }, [userr, navigate]);
+  },[  navigate]);
 
-  const handleUpdate = async () => {
-    try {
-      await updateUserProfile(user);
-      toast.success("Update Profile successful ✅");
-    } catch (err) {
-      console.log(err);
-    }
-  };
+ const handleUpdate = async () => {
+  try {
+    const res = await updateUserProfile(user);
+
+    // ✅ update state
+    setUser(res.data);
+
+    // ✅ update localStorage
+    localStorage.setItem("user", JSON.stringify(res.data));
+
+    toast.success("Update Profile successful ✅");
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 return (
   <div style={{marginTop:"70px"}}>
@@ -66,8 +73,8 @@ return (
               style={{ maxHeight: "300px", objectFit: "cover" }}
             />
 
-            <h6 className="mt-3 mb-1">{userr?.name}</h6>
-            <p className="text-muted small mb-0">{userr?.email}</p>
+            <h6 className="mt-3 mb-1">{user?.name}</h6>
+            <p className="text-muted small mb-0">{user?.email}</p>
           </div>
         </div>
 

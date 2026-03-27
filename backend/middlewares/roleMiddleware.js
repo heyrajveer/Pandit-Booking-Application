@@ -1,4 +1,4 @@
-const roleMiddleware = (role) => {
+export const roleMiddleware = (role) => {
   return (req, res, next) => {
 
     if (req.user.role !== role) {
@@ -11,4 +11,3 @@ const roleMiddleware = (role) => {
   };
 };
 
-module.exports = roleMiddleware;

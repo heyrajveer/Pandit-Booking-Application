@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { getMyBookings } from "../../api/bookingApi";
+import axios from "axios";
 
 function MyBooking() {
   const [bookings, setBookings] = useState([]);
 
+  
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -16,6 +18,26 @@ function MyBooking() {
 
     fetchBookings();
   }, []);
+  const cancelBooking = async (id) => {
+  try {
+    if (!window.confirm("Cancel this booking request?")) return;
+
+    await axios.patch(
+      `http://localhost:8000/api/booking/${id}/status`,
+      { status: "cancelled" },   // ✅ same API
+      { withCredentials: true }
+    );
+
+    alert("Booking cancelled successfully ❌");
+
+    // 🔥 refresh bookings
+    const res = await getMyBookings();
+    setBookings(res.data);
+
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+  }
+};
 
   return (
     <div className="container py-5" style={{ marginTop: "80px" }}>
@@ -81,7 +103,9 @@ function MyBooking() {
 
                   {/* Action Buttons */}
                   {b.status === "pending" && (
-                    <button className="btn btn-outline-danger btn-sm w-100">
+                    <button className="btn btn-outline-danger btn-sm w-100"
+                    onClick={()=>cancelBooking(b._id)}
+                    >
                       Cancel Booking
                     </button>
                   )}

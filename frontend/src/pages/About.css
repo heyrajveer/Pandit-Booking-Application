@@ -44,6 +44,7 @@
   color: #ff6b00;
 }
 
+
 /* Services List */
 .service-list {
   list-style: none;
@@ -51,12 +52,16 @@
 }
 
 .service-list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #fff;
-  margin: 10px 0;
+  margin: 10px 60px 0px 60px;
   padding: 12px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   transition: 0.3s;
+  
 }
 
 .service-list li:hover {

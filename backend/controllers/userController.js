@@ -1,5 +1,5 @@
-const User = require("../models/User");
-exports.getUserProfile = async (req,res)=>{
+import User from "../models/User.js";
+export const getUserProfile = async (req,res)=>{
     try{
         const user =await User.findById(req.user.id).select("-password");
         res.status(200).json(user);
@@ -10,12 +10,13 @@ exports.getUserProfile = async (req,res)=>{
 
     }
 };
-exports.updateUserProfile =async(req,res)=>{
+export const updateUserProfile =async(req,res)=>{
     try {
         const user =await User.findByIdAndUpdate(
             req.user.id,
             req.body,
-            {new:true}
+            // {new:true},
+              { returnDocument: "after" } // ✅ NEW WAY
         ).select("-password");
         // console.log(user)
         res.status(200).json(user);
@@ -25,7 +26,7 @@ exports.updateUserProfile =async(req,res)=>{
         res.status(500).json({message:"err.message"});
     }
 }
-exports.deleteUserProfile =async(req,res)=>{
+export const deleteUserProfile =async(req,res)=>{
     try {
         const user =await User.findByIdAndDelete(req.user.id);
         

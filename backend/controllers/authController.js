@@ -1,8 +1,7 @@
-const User = require("../models/User");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-
-exports.register = async (req, res) => {
+import User from "../models/User.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+export const register = async (req, res) => {
   try {
     const { name, email, password, role, city, phone } = req.body;
 
@@ -57,9 +56,7 @@ exports.register = async (req, res) => {
     });
   }
 };
-
-  
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
       // console.log("BODY 👉", req.body);
@@ -116,8 +113,7 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-exports.logout = (req, res) => {
+export const logout = (req, res) => {
   res.clearCookie("token"); // 🔥 remove cookie
   res.json({ message: "Logged out successfully" });
 };

@@ -5,6 +5,6 @@ export const getUserProfile = async () => {
 };
 
 // 🔹 Get Profile update  (protected route)->isko baad me banayenge
-export const updateUserProfile = async () => {
-  return await API.put("/user/profile");
+export const updateUserProfile = async (data) => {
+  return await API.put("/user/profile",(data));
 };

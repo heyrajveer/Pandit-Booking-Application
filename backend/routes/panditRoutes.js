@@ -1,32 +1,39 @@
-const express = require("express");
+import express from "express";
+import {verifyToken }from "../middlewares/authMiddleware.js";
+import {roleMiddleware} from "../middlewares/roleMiddleware.js";
+
+import {
+  createPandit,
+  getPandits,
+  getMyPanditProfile,
+  updatePanditProfile,
+  getPanditById,
+  deletePandit,
+  getPanditByCity
+} from "../controllers/panditController.js";
+
 const router = express.Router();
 
-const verifyToken = require("../middlewares/authMiddleware");
-const roleMiddleware = require("../middlewares/roleMiddleware");
-const panditController = require("../controllers/panditController");
-
-
 // get all pandits
-router.get("/", panditController.getPandits);
+router.get("/", getPandits);
 
 // pandit creation
-router.post("/create", verifyToken, roleMiddleware("pandit"), panditController.createPandit);
+router.post("/create", verifyToken, roleMiddleware("pandit"), createPandit);
 
-//personal dashboard pandit profle 
-router.get("/profile", verifyToken, roleMiddleware("pandit"), panditController.getMyPanditProfile);
+// personal dashboard pandit profile 
+router.get("/profile", verifyToken, roleMiddleware("pandit"), getMyPanditProfile);
 
 // update pandit profile
-router.put("/update", verifyToken, roleMiddleware("pandit"), panditController.updatePanditProfile);
+router.put("/update", verifyToken, roleMiddleware("pandit"), updatePanditProfile);
 
-
-
-
+// ⚠️ IMPORTANT: place this BEFORE /:id
+router.get("/city/search", getPanditByCity);
 
 // get pandit by id
-router.get("/:id", panditController.getPanditById);
+router.get("/:id", getPanditById);
 
 // delete pandit
-router.delete("/:id", verifyToken, roleMiddleware("pandit"), panditController.deletePandit);
+router.delete("/:id", verifyToken, roleMiddleware("pandit"), deletePandit);
 
-router.get("/city/search",panditController.getPanditByCity);
-module.exports = router;
+// ✅ Correct export
+export default router;

@@ -32,7 +32,7 @@ function About() {
         </div>
       </div>
 
-      <div className="mb-5">
+      <div className="mb-5  ">
         <h3 className="text-center mb-3">What We Offer</h3>
         <ul className="service-list">
           <li>🙏 Pandit booking for pooja</li>

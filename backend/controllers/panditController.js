@@ -1,7 +1,7 @@
-const Pandit = require("../models/Pandit");
+import Pandit from "../models/Pandit.js";
 
 // 🔹 CREATE
-exports.createPandit = async (req, res) => {
+export  const createPandit = async (req, res) => {
   try {
     const existingPandit = await Pandit.findOne({ userId: req.user.id });
 
@@ -30,7 +30,7 @@ exports.createPandit = async (req, res) => {
 
 
 // 🔹 GET ALL
-exports.getPandits = async (req, res) => {
+export const getPandits = async (req, res) => {
   try {
     const pandits = await Pandit.find()
       .populate("userId", "name city phone");
@@ -44,7 +44,7 @@ exports.getPandits = async (req, res) => {
 
 
 // 🔹 GET BY ID
-exports.getPanditById = async (req, res) => {
+export const getPanditById = async (req, res) => {
   try {
     const pandit = await Pandit.findById(req.params.id)
       .populate("userId", "name city phone");
@@ -62,7 +62,7 @@ exports.getPanditById = async (req, res) => {
 
 
 // 🔹 GET MY PROFILE
-exports.getMyPanditProfile = async (req, res) => {
+export const getMyPanditProfile = async (req, res) => {
   try {
     const pandit = await Pandit.findOne({ userId: req.user.id })
       .populate("userId");
@@ -84,7 +84,7 @@ exports.getMyPanditProfile = async (req, res) => {
 
 
 // 🔹 UPDATE PROFILE
-exports.updatePanditProfile = async (req, res) => {
+export const updatePanditProfile = async (req, res) => {
   try {
     const pandit = await Pandit.findOneAndUpdate(
       { userId: req.user.id },
@@ -105,7 +105,7 @@ exports.updatePanditProfile = async (req, res) => {
 
 
 // 🔹 DELETEbad me kaam krunga
-exports.deletePandit = async (req, res) => {
+export const deletePandit = async (req, res) => {
   try {
     const pandit = await Pandit.findByIdAndDelete(req.params.id);
 
@@ -122,7 +122,7 @@ exports.deletePandit = async (req, res) => {
 
 
 //filter pandit by city
-exports.getPanditByCity = async (req, res) => {
+export const getPanditByCity = async (req, res) => {
   try {
     const { city } = req.query;
 

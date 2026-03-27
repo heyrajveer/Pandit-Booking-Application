@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const panditSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -29,4 +29,5 @@ const panditSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model("Pandit", panditSchema);
+const Pandit = mongoose.model("Pandit", panditSchema);
+export default Pandit;

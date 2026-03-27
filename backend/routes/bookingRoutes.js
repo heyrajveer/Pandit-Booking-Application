@@ -1,19 +1,20 @@
-const express = require("express");
-const router = express.Router();
-const verifyToken = require("../middlewares/authMiddleware");
-const {
+import express from "express";
+import {
   createBooking,
   getBookings,
   updateBookingStatus
-} = require("../controllers/bookingController");
+} from "../controllers/bookingController.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
+const router = express.Router();
 
 // create booking
 router.post("/create", verifyToken, createBooking);
 
 // get all bookings
 router.get("/my-bookings", verifyToken, getBookings);
-//update  request status by pandit
+
+// update request status by pandit
 router.patch("/:id/status", verifyToken, updateBookingStatus);
 
-module.exports = router;
+export default router;

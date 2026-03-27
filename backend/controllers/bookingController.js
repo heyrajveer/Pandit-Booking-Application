@@ -1,7 +1,7 @@
-const Booking = require("../models/Booking");
-const Pandit = require("../models/Pandit");
+import Booking from "../models/Booking.js";
+import Pandit from "../models/Pandit.js";
 
-exports.createBooking = async (req, res) => {
+export const createBooking = async (req, res) => {
   try {
     const { panditId, date, time, address } = req.body;
       const userId = req.user?.id;
@@ -24,11 +24,11 @@ exports.createBooking = async (req, res) => {
 };
 
 
-exports.getBookings = async (req, res) => {
+export const getBookings = async (req, res) => {
   try {
     let bookings;
 
-    console.log("REQ.USER:", req.user);
+    // console.log("REQ.USER:", req.user);
 
     // 🔹 USER → see own bookings
     if (req.user.role === "user") {
@@ -46,7 +46,7 @@ exports.getBookings = async (req, res) => {
     else if (req.user.role === "pandit") {
       const pandit = await Pandit.findOne({ userId: req.user.id });
 
-      console.log("PANDIT:", pandit);
+      // console.log("PANDIT:", pandit);
 
       if (!pandit) {
         return res.status(404).json({ message: "Pandit profile not found" });
@@ -73,7 +73,7 @@ exports.getBookings = async (req, res) => {
   }
 };
 
-exports.updateBookingStatus = async (req, res) => {
+export const updateBookingStatus = async (req, res) => {
   try {
     const { status } = req.body;
 

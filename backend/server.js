@@ -1,42 +1,47 @@
-const express=require("express");
-const dotenv =require("dotenv");
-const cors =require("cors");
-const connectDB = require("./config/db");
-const authRoutes = require("./routes/authRoutes");
-const bookingRoutes =require("./routes/bookingRoutes");
-const panditRoutes =require("./routes/panditRoutes");
-const userRoutes =require("./routes/userRoutes");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
+import panditRoutes from "./routes/panditRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+
 dotenv.config();
-const app =express();
 
-const cookieParser = require("cookie-parser");
+const app = express();
 
-app.use(cookieParser()); // 👈 must
-//middel ware
+// middleware
+app.use(cookieParser());
 
 app.use(cors({
-    origin:"http://localhost:5173",
-    credentials:true
+  origin: "http://localhost:5173",
+  credentials: true
 }));
+
 app.use(express.json());
 
-//databse connect
+// database connect
 connectDB();
 
-//Routes
+// routes
 app.use("/api/auth", authRoutes);
 app.use("/api/pandit", panditRoutes);
 app.use("/api/booking", bookingRoutes);
-app.use("/api/user",userRoutes);
-app.get("/",(req,res)=>{
-    res.send("server is running");
-})
+app.use("/api/user", userRoutes);
+
+app.get("/", (req, res) => {
+  res.send("server is running");
+});
 
 app.get("/api/test", (req, res) => {
   res.json({ message: "API working successfully 🚀" });
 });
-  
-const port =process.env.PORT ||3000;
+
+const port = process.env.PORT || 3000;
+
 app.listen(port, () => {
-    console.log(`Server running at: http://localhost:${port}`);
+  console.log(`Server running at: http://localhost:${port}`);
 });

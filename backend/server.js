@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import panditRoutes from "./routes/panditRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 
 dotenv.config();
 
@@ -31,14 +32,18 @@ app.use("/api/auth", authRoutes);
 app.use("/api/pandit", panditRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/contact",contactRoutes);
 
 app.get("/", (req, res) => {
   res.send("server is running");
 });
 
+
 app.get("/api/test", (req, res) => {
   res.json({ message: "API working successfully 🚀" });
 });
+
+
 
 const port = process.env.PORT || 3000;
 

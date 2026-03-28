@@ -21,9 +21,9 @@ function MyBooking() {
   const cancelBooking = async (id) => {
   try {
     if (!window.confirm("Cancel this booking request?")) return;
-
+     const token = localStorage.getItem("token");
     await axios.patch(
-      `http://localhost:8000/api/booking/${id}/status`,
+      `http://localhost:8000/api/booking/${id}/cancel`,
       { status: "cancelled" },   // ✅ same API
       { withCredentials: true }
     );

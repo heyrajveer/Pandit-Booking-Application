@@ -17,7 +17,7 @@ function PanditList() {
           setPandits(res.data);
         } else {
           const res = await getAllPandits();
-          console.log(res.data);
+          // console.log(res.data);
           setPandits(res.data);
         }
       } catch (err) {

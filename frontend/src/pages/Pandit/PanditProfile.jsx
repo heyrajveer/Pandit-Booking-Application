@@ -23,7 +23,7 @@ function PanditProfile() {
       .then((res) => setPandit(res.data || {}))
       .catch(() => setPandit({}))
       .finally(() => setLoading(false));
-  }, [user, navigate]);
+  }, [ navigate]);
 
   const isEdit = pandit && pandit._id;
 

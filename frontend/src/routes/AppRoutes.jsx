@@ -23,7 +23,7 @@ function AppRoutes() {
     <Routes>
        <Route path='/' element={<Home/>}/>
        <Route path='/about' element={<About/>}/>
-        <Route path='/Contact' element={<Contact/>}/>
+        <Route path='/contact' element={<Contact/>}/>
         <Route path="/test" element={<TestApi/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
@@ -47,8 +47,10 @@ re
 
         {/* booking */}
         <Route path="/booking/:id" element={< BookingPage/>}/>
+        
         {/* mybookings */}
          <Route path="/my-bookings" element={< MyBooking/>}/>
+
           {/* mybookings */}
          <Route path="/pandit/requests" element={<PanditRequest/>}/>
     </Routes>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMyBookings } from "../../api/bookingApi";
 import axios from "axios";
+import { showConfirm, showSuccess } from "../../utils/alert";
 
 function MyBooking() {
   const [bookings, setBookings] = useState([]);
@@ -20,15 +21,19 @@ function MyBooking() {
   }, []);
   const cancelBooking = async (id) => {
   try {
-    if (!window.confirm("Cancel this booking request?")) return;
-     const token = localStorage.getItem("token");
+    // if (!window.confirm("Cancel this booking request?")) return;
+    const confirm = showConfirm("Cancel this booking request?");
+    if(!confirm){
+      return;
+    }
+    
     await axios.patch(
       `http://localhost:8000/api/booking/${id}/cancel`,
       { status: "cancelled" },   // ✅ same API
       { withCredentials: true }
     );
 
-    alert("Booking cancelled successfully ❌");
+    showSuccess("Booking cancelled successfully ❌");
 
     // 🔥 refresh bookings
     const res = await getMyBookings();

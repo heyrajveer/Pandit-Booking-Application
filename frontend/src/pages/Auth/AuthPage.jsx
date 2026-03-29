@@ -7,65 +7,109 @@ function AuthPage() {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center "
+      className="d-flex justify-content-center align-items-center min-vh-100 position-relative"
       style={{
-        backgroundImage:
-          "url('/images/havan.png')",
+        backgroundImage: "url('/images/havan.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        position: "relative",
-        height:"90vh"
       }}
     >
-      {/* 🔥 Dark overlay */}
+      {/* 🔥 Overlay */}
       <div
+        className="position-absolute top-0 start-0 w-100 h-100"
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(0,0,0,0.5)",
+          background:
+            "linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.4))",
+          zIndex: 0,
         }}
       ></div>
 
-      {/* 🔥 Card */}
-      <div
-        className="card p-4 shadow-lg"
-        style={{
-          width: "400px",
-          borderRadius: "15px",
-          backdropFilter: "blur(10px)",
-          background: "rgba(255, 255, 255, 0.9)",
-          zIndex: 1,
-        }}
-      >
-        {/* Heading */}
-        <h3 className="text-center mb-3 text-primary fw-bold">
-          🪔 {isLogin ? "User Login" : "Join as Pandit / User"}
-        </h3>
+      <div className="container py-5 position-relative" style={{ zIndex: 1 }}>
+        <div className="row justify-content-center align-items-center gx-5">
 
-        {/* Forms */}
-        {isLogin ? (
-          <Login setIsLogin={setIsLogin} />
-        ) : (
-          <Register setIsLogin={setIsLogin} />
-        )}
+          {/* LEFT CONTENT */}
+          <div className="col-lg-5 d-none d-lg-block">
+            <div className="text-white">
 
-        {/* Toggle */}
-        <div className="text-center mt-3">
-          <small>
-            {isLogin
-              ? "Don't have an account?"
-              : "Already have an account?"}
-          </small>
-          <br />
-          <button
-            className="btn btn-link fw-semibold"
-            onClick={() => setIsLogin(!isLogin)}
-          >
-            {isLogin ? "Register" : "Login"}
-          </button>
+              <span className="badge bg-warning text-dark rounded-pill mb-3 px-3 py-2">
+                🪔 Pandit Booking Studio
+              </span>
+
+              <h1 className="fw-bold mb-4">
+                Book trusted pandits for every ritual with ease.
+              </h1>
+
+              <p className="text-light mb-4">
+                Access verified pandits, manage ceremonies, and experience a
+                smooth spiritual journey — all in one place.
+              </p>
+
+              <ul className="list-unstyled">
+                <li className="mb-3">✅ Secure login & protected data</li>
+                <li className="mb-3">✅ Verified pandits & easy booking</li>
+                <li>✅ Track rituals & upcoming ceremonies</li>
+              </ul>
+
+            </div>
+          </div>
+
+          {/* RIGHT CARD */}
+          <div className="col-lg-5">
+            <div
+              className="card shadow-lg border-0 p-4"
+              style={{
+                borderRadius: "20px",
+                backdropFilter: "blur(12px)",
+                background: "rgba(255,255,255,0.95)",
+              }}
+            >
+
+              {/* HEADER */}
+              <div className="text-center mb-4">
+
+                <span className="badge bg-warning text-dark rounded-pill mb-3 px-3 py-2">
+                  {isLogin ? "Login" : "Register"}
+                </span>
+
+                <h3 className="fw-bold text-dark">
+                  {isLogin ? "Welcome Back 👋" : "Create Account ✨"}
+                </h3>
+
+                <p className="text-muted small">
+                  {isLogin
+                    ? "Login to manage bookings and rituals."
+                    : "Create an account to start booking pandits."}
+                </p>
+
+              </div>
+
+              {/* FORM */}
+              {isLogin ? (
+                <Login setIsLogin={setIsLogin} />
+              ) : (
+                <Register setIsLogin={setIsLogin} />
+              )}
+
+              {/* TOGGLE */}
+              <div className="text-center mt-4">
+                <small className="text-muted">
+                  {isLogin
+                    ? "Don't have an account?"
+                    : "Already have an account?"}
+                </small>
+                <br />
+
+                <button
+                  className="btn btn-link fw-semibold text-warning"
+                  onClick={() => setIsLogin(!isLogin)}
+                >
+                  {isLogin ? "Create Account" : "Login Instead"}
+                </button>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

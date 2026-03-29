@@ -1,50 +1,14 @@
 ﻿import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import pujaData from "../data/pujaData";
+import { showConfirm, showError } from "../utils/alert";
 
-const exploreItems = [
-  {
-    slug: "hanuman-chalisa",
-    name: "Hanuman Chalisa",
-    icon: "\u{1F549}",
-    image:
-      "https://png.pngtree.com/png-clipart/20241102/original/pngtree-hanuman-jayanti-banner-featuring-hindu-lord-in-traditional-design-png-image_16634338.png",
-    // "https://i.pinimg.com/originals/64/11/de/6411de7f4501cde61744c36d63f70815.jpg",
-    description: "Recite 40 verses to seek strength, courage and protection.",
-  },
-  {
-    slug: "satyanarayan-katha",
-    name: "Satyanarayan Katha",
-    icon: "\u{1F4D6}",
-    image: "https://i.scdn.co/image/ab67616d0000b273917a84f587b6607683c900ca",
-    // "https://d18guwlcxyb2ak.cloudfront.net/wp-content/uploads/2019/03/13035054/CIty-Varanasi-Satyanarayan-Katha.jpg",
-    description: "A family puja for gratitude, peace and prosperity.",
-  },
-  {
-    slug: "ganesh-puja",
-    name: "Ganesh Puja",
-    icon: "\u{1F418}",
-    image:
-      "https://tse2.mm.bing.net/th/id/OIP.31yv_DlSbtNIZNc3GZ1UxAHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
-    description: "Invoke Lord Ganesha for auspicious beginnings and wisdom.",
-  },
-  {
-    slug: "ramcharitmanas-path",
-    name: "Ramcharitmanas Path",
-    icon: "\u{270D}\u{FE0F}",
-    image:
-      "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3IOk1lnV950UThqXwuy7wGRuEbi0FArKfA0_a3h6wc6rojRDkjt8GNS_t0dCqP9Eoj-BsHAN4a2Eo94y8Al5r0sU7S7eJRS2JzceqXMUUmuWluDgqufFPjvOuDcf_5G49ZnNcolbRJdW2bl3DJTiTuYyZlpzEWpjtjnqSFXOcUsqRnzc-UUzGsXCyL_WQ/w640-h640/1000630042.webp",
-    description:
-      "Listen to the divine story of Lord Rama through sacred recitation.",
-  },
-  {
-    slug: "havan",
-    name: "Havan",
-    icon: "\u{1F525}",
-    image:
-      "https://thumbs.dreamstime.com/z/rishikesh-india-circa-october-ganga-aarti-ceremony-parmarth-niketan-ashram-sunset-celebration-dussehra-major-hindu-213155194.jpg",
-    description: "A sacred fire ceremony to cleanse your home and mind.",
-  },
-];
+export const pujaList = Object.entries(pujaData).map(
+  ([slug, value]) => ({
+    slug,
+    ...value,
+  })
+);
 
 const whyItems = [
   {
@@ -112,7 +76,7 @@ function Home() {
 
   const handleSearch = () => {
     if (!city.trim()) {
-      alert("Please enter city");
+      showError("Please enter city");
       return;
     }
 
@@ -139,14 +103,33 @@ function Home() {
                 Trusted Puja Platform
               </span>
               <h1 className="display-5 fw-bold mb-4">
-                Find Verified Pandits Near You{" "}
-                <span className="text-warning">{"\u{1F64F}"}</span>
+                Bring Tradition Home with Trusted Pandits
               </h1>
               <p className="lead text-secondary mb-4">
-                Book experienced pandits for puja, havan, and spiritual
-                ceremonies with confidence. Simple search, easy booking, and
-                reliable service.
+                Holistic pandit booking for puja, rituals and ceremonies — crafted
+                for modern families who value sincerity, punctuality and peace of mind.
               </p>
+
+              <div className="row g-3 mb-4">
+                <div className="col-12 col-sm-4">
+                  <div className="rounded-4 p-3 bg-white shadow-sm h-100">
+                    <p className="mb-1 fw-semibold text-warning">Verified Experts</p>
+                    <p className="mb-0 text-muted small">Only background-checked pandits.</p>
+                  </div>
+                </div>
+                <div className="col-12 col-sm-4">
+                  <div className="rounded-4 p-3 bg-white shadow-sm h-100">
+                    <p className="mb-1 fw-semibold text-warning">24/7 Support</p>
+                    <p className="mb-0 text-muted small">Get help anytime during your booking.</p>
+                  </div>
+                </div>
+                <div className="col-12 col-sm-4">
+                  <div className="rounded-4 p-3 bg-white shadow-sm h-100">
+                    <p className="mb-1 fw-semibold text-warning">Transparent Pricing</p>
+                    <p className="mb-0 text-muted small">No hidden fees, clear ceremony costs.</p>
+                  </div>
+                </div>
+              </div>
 
               <div className="card shadow-sm border-0 p-3 p-md-4">
                 <div className="row g-2 g-md-3 align-items-center">
@@ -188,14 +171,14 @@ function Home() {
         </div>
       </section>
 
-      <section className="py-5">
+      <section className="py-5" style={{ backgroundColor: "#fff7eb" }}>
         <div className="container">
           <div className="text-center mb-5">
             <p className="text-warning fw-semibold mb-2">Why Choose Us</p>
             <h2 className="fw-bold">Trusted, easy, and affordable</h2>
-            <p className="text-muted mx-auto" style={{ maxWidth: "620px" }}>
-              From verified pandits to transparent pricing, our platform is
-              built for devotees who want a seamless puja experience.
+            <p className="text-muted mx-auto" style={{ maxWidth: "640px" }}>
+              Discover a premium pandit booking platform designed for families,
+              ceremonies, and sacred celebrations. Reliability meets tradition.
             </p>
           </div>
 
@@ -251,7 +234,7 @@ function Home() {
       <section
         className="py-5"
         style={{
-          background: "linear-gradient(5deg, #92d9e7 10%, #efe9cd 100%)",
+          background: "linear-gradient(5deg, #fef2d4 10%, #fff2e0 100%)",
         }}
       >
         <div className="container">
@@ -262,8 +245,12 @@ function Home() {
               </span>
               <h2 className="fw-bold">Popular rituals curated for you</h2>
               <p className="text-muted">
-                Discover the most requested pujas and kathas for every
-                celebration.
+                Choose from a hand-picked collection of kathas and pujas, each
+                explained clearly so you can book with confidence.
+              </p>
+              <p className="text-muted small">
+                Every ritual card includes ceremony details, benefits and easy
+                booking information.
               </p>
               
               <div className="card border-0 shadow-sm overflow-hidden rounded-4 mt-4">
@@ -290,7 +277,7 @@ function Home() {
             </div>
             <div className="col-lg-7">
               <div className="row g-3">
-                {exploreItems.slice(0, 4).map((item) => (
+                {pujaList.slice(0, 4).map((item) => (
                   <div key={item.slug} className="col-12 col-sm-6">
                     <div
                       className="card border-0 shadow-sm h-100 overflow-hidden"
@@ -300,7 +287,7 @@ function Home() {
                     >
                       <img
                         src={item.image}
-                        alt={item.name}
+                        alt={item.name.en}
                         className="img-fluid w-100"
                         style={{
                           height: "180px",
@@ -314,10 +301,10 @@ function Home() {
                       >
                         <div className="d-flex align-items-center mb-3">
                           <div className="fs-3 me-3">{item.icon}</div>
-                          <h6 className="fw-bold mb-0">{item.name}</h6>
+                          <h6 className="fw-bold mb-0">{item.name.en}</h6>
                         </div>
                         <p className="text-muted small mb-3">
-                          {item.description}
+                          {item.description.en}
                         </p>
                         <button
                           type="button"
@@ -441,8 +428,9 @@ function Home() {
           <div className="p-4 p-md-5 rounded-4 shadow-sm bg-white border">
             <h3 className="fw-bold mb-3">Become a Pandit & Start Earning</h3>
             <p className="text-muted mb-4">
-              Join our platform to serve devotees, grow your reach, and get
-              booked for ceremonies.
+              Join our platform to connect with devotees, manage bookings
+              professionally, and grow your pandit services with trusted
+              support.
             </p>
             <button
               className="btn btn-warning btn-lg text-white"

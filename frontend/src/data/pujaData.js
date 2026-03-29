@@ -4,7 +4,7 @@
       en: "Hanuman Chalisa",
       hi: "हनुमान चालीसा",
     },
-
+    icon: "\u{1F549}",
     description: {
       en: "A powerful devotional hymn dedicated to Lord Hanuman for strength and protection.",
       hi: "भगवान हनुमान को समर्पित एक शक्तिशाली स्तोत्र जो शक्ति और सुरक्षा प्रदान करता है।",
@@ -58,7 +58,7 @@ Harahu kalesh vikaar.
       en: "Ramcharitmanas",
       hi: "रामचरितमानस",
     },
-
+icon: "\u{270D}\u{FE0F}",
     description: {
       en: "Sacred epic by Tulsidas narrating Lord Rama's life.",
       hi: "तुलसीदास द्वारा रचित भगवान राम के जीवन की पवित्र कथा।",
@@ -87,6 +87,7 @@ Harahu kalesh vikaar.
       en: "Ganesh Puja",
       hi: "गणेश पूजा",
     },
+      icon: "\u{1F418}",
 
     description: {
       en: "Performed to remove obstacles and start new work.",
@@ -121,6 +122,7 @@ Steps:
     en: "Satyanarayan Katha",
     hi: "सत्यनारायण कथा",
   },
+  icon: "\u{1F4D6}",
 
   description: {
     en: "A sacred ritual performed to seek blessings of Lord Vishnu for prosperity and happiness.",
@@ -168,7 +170,7 @@ Steps:
     en: "Havan (Homa)",
     hi: "हवन (होम)",
   },
-
+ icon: "\u{1F525}",
   description: {
     en: "Havan is a sacred fire ritual performed to purify the environment, invoke divine blessings, and create positive spiritual energy.",
     hi: "हवन एक पवित्र अग्नि अनुष्ठान है जो वातावरण को शुद्ध करने, दिव्य आशीर्वाद प्राप्त करने और सकारात्मक ऊर्जा उत्पन्न करने के लिए किया जाता है।",
@@ -243,4 +245,5 @@ It is often performed during festivals, weddings, and important life events.`,
     "https://images.herzindagi.info/image/2022/Nov/havan-kund-for-home.jpg",
 }
 };
+
 export default pujaData;

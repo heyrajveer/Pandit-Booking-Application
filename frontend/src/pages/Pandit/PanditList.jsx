@@ -43,28 +43,67 @@ function PanditList() {
   }, [search, pandits]);
 
   return (
-    <div className="bg-light min-vh-100 " style={{ marginTop: "70px", background: "linear-gradient(135deg, #edf9fb, #88eaea)"}}>
-      <div className="container py-5 " >
-        {/* Header */}
-        <div className="text-center mb-5 ">
-          <h2 className="fw-bold text-dark">
-            Book Trusted Pandits {city && `in ${city}`}
-          </h2>
-          <p className="text-secondary">
-            Search pandits by services like Puja, Marriage, Havan
-          </p>
+    <div className="min-vh-100" style={{ marginTop: "70px", background: "linear-gradient(135deg, #f0fbfd, #d9f3f7)" }}>
+      <div className="container py-5">
+        <div className="rounded-4 p-4 p-lg-5 mb-5" style={{ background: "rgba(255,255,255,0.92)", boxShadow: "0 30px 80px rgba(30, 70, 100, 0.12)" }}>
+          <div className="row align-items-center gy-4">
+            <div className="col-lg-7">
+              <span className="badge bg-warning text-dark rounded-pill mb-3">
+                Verified Pandit Network
+              </span>
+              <h1 className="display-6 fw-bold mb-3">
+                Book trusted pandits for puja, marriage, havan and ceremonies.
+              </h1>
+              <p className="text-muted mb-4">
+                Find verified pandits with clear pricing, service details and ratings.
+                Search by service and compare the best profiles for your event.
+              </p>
+              <div className="d-flex flex-wrap gap-2">
+                <span className="badge bg-white text-success border px-3 py-2">
+                  500+ Verified Experts
+                </span>
+                <span className="badge bg-white text-primary border px-3 py-2">
+                  Instant Booking
+                </span>
+                <span className="badge bg-white text-warning border px-3 py-2">
+                  Ceremony Ready
+                </span>
+              </div>
+            </div>
+            <div className="col-lg-5 text-lg-end">
+              <div className="rounded-4 overflow-hidden shadow-sm" style={{ maxWidth: "360px", margin: "0 auto" }}>
+                <img
+                  src="https://images.unsplash.com/photo-1522542550995-8b26e5c902c4?auto=format&fit=crop&w=900&q=80"
+                  alt="pandit booking"
+                  className="img-fluid"
+                  style={{ height: "300px", objectFit: "cover" }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Search */}
-        <div className="row mb-4 justify-content-center">
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control form-control-lg shadow-sm rounded-pill px-4"
-              placeholder="Search by service (e.g. Marriage, Puja...)"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+        <div className="row align-items-center mb-4">
+          <div className="col-md-8">
+            <div className="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border border-white bg-white">
+              <span className="input-group-text bg-white border-0 pe-3" style={{ fontSize: "1.1rem" }}>
+                🔍
+              </span>
+              <input
+                type="text"
+                className="form-control border-0"
+                placeholder="Search by service (e.g. Marriage, Puja...)"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{ minHeight: "55px" }}
+              />
+            </div>
+          </div>
+          <div className="col-md-4 text-md-end mt-3 mt-md-0">
+            <span className="badge bg-light text-dark shadow-sm px-4 py-2">
+              {filteredPandits.length} available
+              {city ? ` in ${city}` : ""}
+            </span>
           </div>
         </div>
 

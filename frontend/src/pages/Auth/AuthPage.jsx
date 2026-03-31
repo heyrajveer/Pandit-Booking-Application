@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+    if (storedUser) {
+      navigate(storedUser.role === "pandit" ? "/pandit-dashboard" : "/user-dashboard");
+    }
+  }, [navigate]);
 
   return (
     <div
@@ -36,12 +45,12 @@ function AuthPage() {
               </span>
 
               <h1 className="fw-bold mb-4">
-                Book trusted pandits for every ritual with ease.
+                Book trusted pandits or join as a pandit partner.
               </h1>
 
               <p className="text-light mb-4">
-                Access verified pandits, manage ceremonies, and experience a
-                smooth spiritual journey — all in one place.
+                Users can book verified pandits for any ritual. Pandits can
+                register to manage bookings, grow services, and reach new clients.
               </p>
 
               <ul className="list-unstyled">
@@ -77,8 +86,8 @@ function AuthPage() {
 
                 <p className="text-muted small">
                   {isLogin
-                    ? "Login to manage bookings and rituals."
-                    : "Create an account to start booking pandits."}
+                    ? "Login to manage bookings, rituals, or your pandit profile."
+                    : "Create an account to start booking pandits or offering spiritual services."}
                 </p>
 
               </div>

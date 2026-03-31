@@ -103,6 +103,31 @@ export const updatePanditProfile = async (req, res) => {
   }
 };
 
+// 🔹 UPLOAD PROFILE IMAGE
+export const uploadPanditProfileImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+
+    const pandit = await Pandit.findOneAndUpdate(
+      { userId: req.user.id },
+      { profileImage: imageUrl },
+      { new: true }
+    ).populate("userId", "name email city phone");
+
+    if (!pandit) {
+      return res.status(404).json({ message: "Pandit profile not found" });
+    }
+
+    res.status(200).json(pandit);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 
 // 🔹 DELETEbad me kaam krunga
 export const deletePandit = async (req, res) => {

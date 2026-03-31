@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { getUserProfile, updateUserProfile } from "../../api/userApi";
+import {
+  getUserProfile,
+  updateUserProfile,
+  uploadUserProfileImage,
+} from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 
 function UserProfile() {
@@ -8,6 +12,8 @@ function UserProfile() {
   const userr = JSON.parse(localStorage.getItem("user") || "null");
 
   const [user, setUser] = useState({});
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState("");
 
   useEffect(() => {
     if (!userr) {
@@ -18,6 +24,7 @@ function UserProfile() {
       try {
         const res = await getUserProfile();
         setUser(res.data);
+        setPreviewImage(res.data.profileImage || "");
       } catch (err) {
         console.log(err);
       }
@@ -29,16 +36,26 @@ function UserProfile() {
  const handleUpdate = async () => {
   try {
     const res = await updateUserProfile(user);
+    let updatedUser = res.data;
+
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("profileImage", selectedFile);
+      const uploadRes = await uploadUserProfileImage(formData);
+      updatedUser = uploadRes.data;
+      setPreviewImage(uploadRes.data.profileImage || "");
+    }
 
     // ✅ update state
-    setUser(res.data);
+    setUser(updatedUser);
 
     // ✅ update localStorage
-    localStorage.setItem("user", JSON.stringify(res.data));
+    localStorage.setItem("user", JSON.stringify(updatedUser));
 
     toast.success("Update Profile successful ✅");
   } catch (err) {
     console.log(err);
+    toast.error("Unable to update profile. Please try again.");
   }
 };
 
@@ -51,7 +68,7 @@ return (
       <span className="navbar-brand fw-semibold">👤 User Profile</span>
 
       <img
-        src="https://img.freepik.com/premium-photo/immersive-3d-cartoon-avatar-captivating-frontprofile-view-10yearold-white-male-with-black-h_983420-10038.jpg?w=2000"
+        src= {previewImage || "https://img.freepik.com/premium-photo/immersive-3d-cartoon-avatar-captivating-frontprofile-view-10yearold-white-male-with-black-h_983420-10038.jpg?w=2000"}
         alt="profile"
         className="rounded-circle border"
         width="45"
@@ -67,14 +84,22 @@ return (
         <div className="col-lg-5 text-center">
           <div className="card border-0 shadow-sm p-3">
             <img
-              src="https://img.freepik.com/premium-photo/immersive-3d-cartoon-avatar-captivating-frontprofile-view-10yearold-white-male-with-black-h_983420-10038.jpg?w=2000"
+              src={
+                previewImage ||
+                "https://img.freepik.com/premium-photo/immersive-3d-cartoon-avatar-captivating-frontprofile-view-10yearold-white-male-with-black-h_983420-10038.jpg?w=2000"
+              }
               alt="user"
               className="img-fluid rounded"
-              style={{ maxHeight: "300px", objectFit: "cover" }}
+              style={{ maxHeight: "300px", objectFit: "cover" ,objectPosition:"top"}}
             />
 
             <h6 className="mt-3 mb-1">{user?.name}</h6>
-            <p className="text-muted small mb-0">{user?.email}</p>
+            <p className="text-muted small mb-1">{user?.email}</p>
+            {user?.profession && (
+              <p className="text-muted small mb-0">
+                {user.profession}
+              </p>
+            )}
           </div>
         </div>
 
@@ -120,6 +145,18 @@ return (
                 />
               </div>
 
+              {/* Profession */}
+              <div className="mb-3">
+                <label className="form-label small">Profession</label>
+                <input
+                  className="form-control"
+                  value={user.profession || ""}
+                  onChange={(e) =>
+                    setUser({ ...user, profession: e.target.value })
+                  }
+                />
+              </div>
+
               {/* City */}
               <div className="mb-4">
                 <label className="form-label small">City</label>
@@ -129,6 +166,22 @@ return (
                   onChange={(e) =>
                     setUser({ ...user, city: e.target.value })
                   }
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="form-label small">Profile Photo</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="form-control"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setSelectedFile(file);
+                      setPreviewImage(URL.createObjectURL(file));
+                    }
+                  }}
                 />
               </div>
 

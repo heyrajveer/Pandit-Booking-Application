@@ -22,133 +22,159 @@ function UserDashboard() {
     }
   };
 
-return (
-  <div style={{marginTop:"70px",
-  
-  }}>
-  <div className=" 0"
-   style={{ minHeight: "82vh",
-    background:"rgb(203, 231, 235)"
-    }}>
-
-    {/* 🔥 Content */}
-    <div className="container py-5" style={{background:"rgba(151, 230, 228, 0.62)"}}>
-
-      {/* 👤 Profile Section */}
-      <div className="card shadow-sm mb-4 p-4"
-      style={{background:"linear-gradient(to right, #38a1bb, #6dd5ed)"}}
+  return (
+    <div style={{ marginTop: "70px" }}>
+      <div
+        className="position-relative"
+        style={{ minHeight: "82vh", background: "#edf7fb" }}
       >
-        <div className="d-flex align-items-center">
+        <div
+          className="position-absolute top-0 start-0 w-100"
+          style={{
+            height: "260px",
+            background: "linear-gradient(135deg, #1f497c, #4f8fc7)",
+            borderBottomLeftRadius: "35px",
+            borderBottomRightRadius: "35px",
+            zIndex: 0,
+          }}
+        ></div>
 
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png"
-            alt="user"
-            className="rounded-circle me-3"
-            width="70"
-          />
-
-          <div>
-            <h3 className="mb-1">{user?.name.toUpperCase()}</h3>
-           
-             <h3> Welcome back! Manage your bookings and explore pandits easily.</h3>
-            
+        <div className="container py-5" style={{ position: "relative", zIndex: 1 }}>
+          <div
+            className="card shadow-lg mb-4 p-4 text-white"
+            style={{ background: "rgba(18, 78, 143, 0.95)" }}
+          >
+            <div className="row align-items-center">
+              <div className="col-md-8">
+                <div className="d-flex align-items-center gap-3">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png"
+                    alt="user"
+                    className="rounded-circle"
+                    width="80"
+                  />
+                  <div>
+                    <h2 className="mb-1">{user?.name || "Guest"}</h2>
+                    <p className="mb-1 text-white-50">
+                      {user?.profession || "Community Member"}
+                    </p>
+                    <p className="mb-0">
+                      Welcome back! Manage your bookings and discover verified pandits.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4 text-md-end mt-3 mt-md-0">
+                <span className="badge bg-light text-dark py-2 px-3 fs-6">
+                  Member since {new Date(user?.createdAt || Date.now()).getFullYear()}
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* 🔲 Cards */}
-      <div className="row g-4">
+          <div className="row g-4">
+            <div className="col-md-4">
+              <div className="card shadow-sm h-100 text-center p-4 border-0" style={{ borderRadius: "22px" }}>
+                <div
+                  className="bg-light rounded-4 mx-auto mb-3"
+                  style={{ width: "80px", height: "80px", display: "grid", placeItems: "center" }}
+                >
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/747/747376.png"
+                    alt="profile"
+                    width="38"
+                  />
+                </div>
+                <h5 className="fw-semibold">My Profile</h5>
+                <p className="text-muted small">
+                  View and update your personal details
+                </p>
+                <button
+                  className="btn btn-primary rounded-pill px-4"
+                  onClick={() => navigate("/user-profile")}
+                >
+                  Edit Profile
+                </button>
+              </div>
+            </div>
 
-        {/* Profile */}
-        <div className="col-md-4">
-          <div className="card shadow-sm h-100 text-center p-3">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/747/747376.png"
-              alt="profile"
-              width="60"
-              className="mx-auto mb-2"
-            />
-            <h5>Profile</h5>
-            <p className="text-muted small">
-              View and update your personal details
-            </p>
+            <div className="col-md-4">
+              <div className="card shadow-sm h-100 text-center p-4 border-0" style={{ borderRadius: "22px" }}>
+                <div
+                  className="bg-light rounded-4 mx-auto mb-3"
+                  style={{ width: "80px", height: "80px", display: "grid", placeItems: "center" }}
+                >
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
+                    alt="pandit"
+                    width="38"
+                  />
+                </div>
+                <h5 className="fw-semibold">Find Pandits</h5>
+                <p className="text-muted small">
+                  Browse and book verified pandits quickly
+                </p>
+                <button
+                  className="btn btn-primary rounded-pill px-4"
+                  onClick={() => navigate("/pandits")}
+                >
+                  Search Now
+                </button>
+              </div>
+            </div>
+
+            <div className="col-md-4">
+              <div className="card shadow-sm h-100 text-center p-4 border-0" style={{ borderRadius: "22px" }}>
+                <div
+                  className="bg-light rounded-4 mx-auto mb-3"
+                  style={{ width: "80px", height: "80px", display: "grid", placeItems: "center" }}
+                >
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png"
+                    alt="booking"
+                    width="38"
+                  />
+                </div>
+                <h5 className="fw-semibold">My Bookings</h5>
+                <p className="text-muted small">
+                  Track your past and upcoming bookings
+                </p>
+                <button
+                  className="btn btn-primary rounded-pill px-4"
+                  onClick={() => navigate("/my-bookings")}
+                >
+                  View Bookings
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-5 p-4 rounded-4 shadow-sm bg-white">
+            <div className="row align-items-center">
+              <div className="col-md-8">
+                <h5 className="fw-semibold">Need Help?</h5>
+                <p className="text-muted mb-0">
+                  Our platform helps you connect with trusted pandits easily and professionally.
+                </p>
+              </div>
+              <div className="col-md-4 text-md-end mt-3 mt-md-0">
+                <button className="btn btn-outline-secondary rounded-pill px-4" onClick={() => navigate('/contact')}>Contact Support</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-4">
             <button
-              className="btn btn-outline-primary"
-              onClick={() => navigate("/user-profile")}
+              className="btn btn-outline-danger rounded-pill px-4"
+              onClick={handleLogout}
             >
-              Go to Profile
+              Logout
             </button>
           </div>
         </div>
-
-        {/* Pandits */}
-        <div className="col-md-4">
-          <div className="card shadow-sm h-100 text-center p-3">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
-              alt="pandit"
-              width="60"
-              className="mx-auto mb-2"
-            />
-            <h5>Find Pandits</h5>
-            <p className="text-muted small">
-              Browse and book verified pandits
-            </p>
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => navigate("/pandits")}
-            >
-              View Pandits
-            </button>
-          </div>
-        </div>
-
-        {/* Bookings */}
-        <div className="col-md-4">
-          <div className="card shadow-sm h-100 text-center p-3">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png"
-              alt="booking"
-              width="60"
-              className="mx-auto mb-2"
-            />
-            <h5>My Bookings</h5>
-            <p className="text-muted small">
-              Track your past and upcoming bookings
-            </p>
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => navigate("/my-bookings")}
-            >
-              View Bookings
-            </button>
-          </div>
-        </div>
-
       </div>
-
-      {/* 🚀 Extra Section (Professional Touch) */}
-      <div className="mt-5 text-center">
-        <h5 className="fw-semibold">Need Help?</h5>
-        <p className="text-muted small">
-          Our platform helps you connect with trusted pandits easily and quickly.
-        </p>
-      </div>
-
-      {/* Logout */}
-      <div className="text-center mt-3">
-        <button
-          className="btn btn-danger px-4"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-      </div>
-
     </div>
-  </div>
-  </div>
-);
+  );
 }
 
 export default UserDashboard;

@@ -4,6 +4,7 @@ import {
   getMyPanditProfile,
   updatePanditProfile,
   createPanditProfile,
+  uploadProfileImage,
 } from "../../api/panditApi";
 
 function PanditProfile() {
@@ -12,6 +13,8 @@ function PanditProfile() {
 
   const [pandit, setPandit] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState("");
 
   useEffect(() => {
     if (!user || user.role?.toLowerCase() !== "pandit") {
@@ -20,7 +23,11 @@ function PanditProfile() {
     }
 
     getMyPanditProfile()
-      .then((res) => setPandit(res.data || {}))
+      .then((res) => {
+        const profile = res.data || {};
+        setPandit(profile);
+        setPreviewImage(profile.profileImage || "");
+      })
       .catch(() => setPandit({}))
       .finally(() => setLoading(false));
   }, [ navigate]);
@@ -38,15 +45,21 @@ function PanditProfile() {
 
       if (isEdit) {
         await updatePanditProfile(data);
-        alert("Profile updated ✅");
       } else {
         await createPanditProfile(data);
-        alert("Profile created ✅");
       }
 
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("profileImage", selectedFile);
+        await uploadProfileImage(formData);
+      }
+
+      alert("Profile saved ✅");
       navigate("/pandit-dashboard");
     } catch (err) {
       console.log(err);
+      alert("Unable to save profile. Please try again.");
     }
   };
 
@@ -81,16 +94,16 @@ function PanditProfile() {
       <div className="container d-flex justify-content-center mt-4 bg-red">
         <div className="p-2">
           <img
-            src="https://img.freepik.com/premium-photo/hindu-pandit-3d-character-hindu-pujari-illustration-hindu-dress-dhoti-man_714173-1111.jpg?w=2000"
+            src={
+              previewImage ||
+              "https://img.freepik.com/premium-photo/hindu-pandit-3d-character-hindu-pujari-illustration-hindu-dress-dhoti-man_714173-1111.jpg?w=2000"
+            }
             alt="pandit"
             style={{
               width: "450px",
               maxWidth: "370px",
-              // height: "450px",
               objectFit: "cover",
-              borderRadius: "20px", // ✅ now works
-              border: "3px solid white",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+              borderRadius: "20px",
             }}
           />
         </div>
@@ -165,6 +178,22 @@ function PanditProfile() {
               onChange={(e) =>
                 setPandit({ ...pandit, description: e.target.value })
               }
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Profile Photo</label>
+            <input
+              type="file"
+              accept="image/*"
+              className="form-control"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setSelectedFile(file);
+                  setPreviewImage(URL.createObjectURL(file));
+                }
+              }}
             />
           </div>
 

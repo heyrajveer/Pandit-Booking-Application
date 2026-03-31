@@ -73,10 +73,10 @@ function PanditList() {
             <div className="col-lg-5 text-lg-end">
               <div className="rounded-4 overflow-hidden shadow-sm" style={{ maxWidth: "360px", margin: "0 auto" }}>
                 <img
-                  src="https://images.unsplash.com/photo-1522542550995-8b26e5c902c4?auto=format&fit=crop&w=900&q=80"
+                  src="https://thumbs.dreamstime.com/z/pandit-vector-illustration-india-indian-havan-hindu-hindi-worship-priest-sadhu-cartoon-character-pandit-ji-cartoon-character-134357495.jpg?w=768"
                   alt="pandit booking"
                   className="img-fluid"
-                  style={{ height: "300px", objectFit: "cover" }}
+                  style={{ height: "280px", objectFit: "cover" }}
                 />
               </div>
             </div>
@@ -145,10 +145,10 @@ function PanditList() {
                   {/* Image */}
                   <img
                     src={
-                      p.image ||
+                      p.profileImage ||
                       "https://cdn.vectorstock.com/i/preview-1x/84/05/indian-pandit-cartoon-vector-35888405.jpg"
                     }
-                    alt={p.name}
+                    alt={p.userId?.name || "Pandit"}
                     className="card-img-top rounded-top-4"
                     style={{
                       height: "220px",
@@ -159,7 +159,7 @@ function PanditList() {
 
                   {/* Body */}
                   <div className="card-body text-center">
-                    <h5 className="fw-semibold">{p.name}</h5>
+                    <h5 className="fw-semibold">{p.userId?.name || "Pandit"}</h5>
 
                     <p className="text-muted small">
                       {p.experience} experience

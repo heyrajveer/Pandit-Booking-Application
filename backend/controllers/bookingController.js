@@ -101,6 +101,7 @@ export const getBookings = async (req, res) => {
 };
 
 
+
 export const updateBookingStatus = async (req, res) => {
   try {
     const { status } = req.body;

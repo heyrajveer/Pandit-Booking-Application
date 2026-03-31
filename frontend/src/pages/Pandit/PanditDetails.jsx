@@ -31,7 +31,7 @@ function PanditDetails() {
           <div className="col-md-5">
             <img
               src={
-                pandit.image ||
+                pandit.profileImage ||
                 "https://cdn.vectorstock.com/i/1000v/84/24/indian-pandit-cartoon-vector-35888424.jpg"
               }
               alt="pandit"

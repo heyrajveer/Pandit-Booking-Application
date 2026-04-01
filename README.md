@@ -13,7 +13,7 @@ Login Page
 ![Login Page](frontend/public/images/Login_Page.png)
 
 Pandit List  
-![Pandit List](frontend/public/images/pandit lists.png)
+![Pandit List](frontend/public/images/pandit_lists.png)
 
 Pandit Dashboard  
 ![Pandit Dashboard](frontend/public/images/pandit_dashboard%20(1).png)

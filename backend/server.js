@@ -11,6 +11,7 @@ import bookingRoutes from "./routes/bookingRoutes.js";
 import panditRoutes from "./routes/panditRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 
 dotenv.config();
 
@@ -20,7 +21,13 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+    "http://localhost:3000",
+    process.env.FRONTEND_URL || ""
+  ].filter(Boolean),
   credentials: true
 }));
 
@@ -41,6 +48,7 @@ app.use("/api/pandit", panditRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/contact",contactRoutes);
+app.use("/api",chatRoutes);
 
 app.get("/", (req, res) => {
   res.send("server is running");

@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { getMyBookings } from "../../api/bookingApi";
 import axios from "axios";
 import { showConfirm, showSuccess } from "../../utils/alert";
+import "../../styles/Booking.css";
 
 function MyBooking() {
   const [bookings, setBookings] = useState([]);
+  const [filter, setFilter] = useState("all");
 
   
   useEffect(() => {
@@ -19,6 +21,66 @@ function MyBooking() {
 
     fetchBookings();
   }, []);
+
+  // Filter bookings based on selected filter
+  // const getFilteredBookings = () => {
+  //   const now = new Date();
+  //   const currentMonth = now.getMonth();
+  //   const currentYear = now.getFullYear();
+
+  //   switch (filter) {
+  //     case "lastMonth":
+  //       return bookings.filter(booking => {
+  //         const bookingDate = new Date(booking.date);
+  //         const bookingMonth = bookingDate.getMonth();
+  //         const bookingYear = bookingDate.getFullYear();
+  //         return (bookingYear === currentYear && bookingMonth === currentMonth - 1) ||
+  //                (bookingYear === currentYear - 1 && currentMonth === 0 && bookingMonth === 11);
+  //       });
+  //     case "lastYear":
+  //       return bookings.filter(booking => {
+  //         const bookingDate = new Date(booking.date);
+  //         return bookingDate.getFullYear() === currentYear - 1;
+  //       });
+  //     default:
+  //       return bookings;
+  //   }
+  // };
+  const getFilteredBookings = () => {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  return bookings.filter((booking) => {
+    const bookingDate = new Date(booking.date);
+    const bookingMonth = bookingDate.getMonth();
+    const bookingYear = bookingDate.getFullYear();
+
+    switch (filter) {
+      case "thisMonth":
+        return bookingMonth === currentMonth && bookingYear === currentYear;
+
+      case "lastMonth":
+        return (
+          (bookingYear === currentYear && bookingMonth === currentMonth - 1) ||
+          (currentMonth === 0 &&
+            bookingYear === currentYear - 1 &&
+            bookingMonth === 11)
+        );
+
+      case "thisYear":
+        return bookingYear === currentYear;
+
+      case "lastYear":
+        return bookingYear === currentYear - 1;
+
+      default:
+        return true;
+    }
+  });
+};
+
+  const filteredBookings = getFilteredBookings();
   const cancelBooking = async (id) => {
   try {
     // if (!window.confirm("Cancel this booking request?")) return;
@@ -48,19 +110,37 @@ function MyBooking() {
     <div className="container py-5" style={{ marginTop: "80px" }}>
       
       {/* Header */}
-      <div className="text-center mb-5">
+      <div className="text-center mb-4">
         <h2 className="fw-bold">My Bookings</h2>
         <p className="text-muted">Track all your pandit bookings</p>
       </div>
 
+      {/* Filter */}
+      <div className="d-flex justify-content-center mb-4">
+        <select
+          className="form-select"
+          style={{ maxWidth: "200px" }}
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        >
+           <option value="all">All Bookings</option>
+  <option value="lastMonth">Last Month</option>
+  <option value="thisMonth">This Month</option>
+  <option value="lastYear">Last Year</option>
+  <option value="thisYear">This Year</option>
+        </select>
+      </div>
+
       {/* No bookings */}
-      {bookings.length === 0 ? (
+      {filteredBookings.length === 0 ? (
         <div className="text-center">
-          <h5 className="text-muted">No bookings found</h5>
+          <h5 className="text-muted">
+            {filter === "all" ? "No bookings found" : `No bookings found for ${filter === "lastMonth" ? "last month" : "last year"}`}
+          </h5>
         </div>
       ) : (
         <div className="row g-4">
-          {bookings.map((b) => (
+          {filteredBookings.map((b) => (
             <div key={b._id} className="col-md-6 col-lg-4">
               
               <div className="card border-0 shadow-lg h-100 rounded-4 booking-card">
@@ -102,6 +182,11 @@ function MyBooking() {
                   <p className="mb-1">
                     ⏰ <strong>Time:</strong> {b.time}
                   </p>
+                  {b.poojaType && (
+                    <p className="mb-1">
+                      🕉️ <strong>Pooja Type:</strong> {b.poojaType}
+                    </p>
+                  )}
                   <p className="mb-3">
                     🏠 <strong>Address:</strong> {b.address}
                   </p>

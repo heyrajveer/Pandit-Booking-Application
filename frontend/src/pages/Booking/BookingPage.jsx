@@ -9,10 +9,19 @@ function BookingPage() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [address, setAddress] = useState("");
+  const [poojaType, setPoojaType] = useState("");
+
+  const poojaOptions = [
+    "Griha Pravesh",
+    "Satyanarayan Pooja",
+    "Wedding",
+    "Havan",
+    "Other"
+  ];
 
   const handleBooking = async () => {
     try {
-      if (!date || !time || !address) {
+      if (!date || !time || !address || !poojaType) {
         return alert("Please fill all fields");
       }
 
@@ -22,7 +31,8 @@ function BookingPage() {
           panditId: id,   // ✅ from URL
           date,
           time,
-          address
+          address,
+          poojaType
         },
         {
           withCredentials: true
@@ -41,6 +51,22 @@ function BookingPage() {
   return (
     <div className="container mt-5" style={{ maxWidth: "500px" }}>
       <h3 className="mb-4 text-center">Book Pandit</h3>
+
+      <div className="mb-3">
+        <label>Pooja Type</label>
+        <select
+          className="form-control"
+          value={poojaType}
+          onChange={(e) => setPoojaType(e.target.value)}
+        >
+          <option value="">Select Pooja Type</option>
+          {poojaOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div className="mb-3">
         <label>Date</label>

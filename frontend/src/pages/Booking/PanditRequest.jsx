@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "../../styles/Booking.css";
 
 function PanditRequest() {
   const [bookings, setBookings] = useState([]);
@@ -38,61 +39,92 @@ function PanditRequest() {
 
   return (
     <div className="container py-5" style={{ marginTop: "80px" }}>
-      <h2 className="text-center mb-4">Booking Requests</h2>
+      <div className="text-center mb-5">
+        <h2 className="fw-bold">Booking Requests</h2>
+        <p className="text-muted">Manage your booking requests</p>
+      </div>
 
       {bookings.length === 0 ? (
-        <p className="text-center">No requests found</p>
+        <div className="text-center">
+          <h5 className="text-muted">No requests found</h5>
+        </div>
       ) : (
         <div className="row g-4">
           {bookings.map((b) => (
             <div key={b._id} className="col-md-6 col-lg-4">
-              <div className="card shadow border-0 p-3 rounded-4">
+              <div className="card border-0 shadow-lg h-100 rounded-4 booking-card">
 
-                {/* User Info */}
-                <h5>{b.userId?.name}</h5>
-                <p className="text-muted">{b.userId?.email}</p>
-
-                <hr />
-
-                {/* Booking Info */}
-                <p>📅 {b.date}</p>
-                <p>⏰ {b.time}</p>
-                <p>🏠 {b.address}</p>
-
-                {/* Status */}
-                <p>
-                  Status:{" "}
-                  <span
-                    className={`badge ${
-                      b.status === "confirmed"
-                        ? "bg-success"
-                        : b.status === "cancelled"
-                        ? "bg-danger"
-                        : "bg-warning text-dark"
-                    }`}
-                  >
-                    {b.status}
-                  </span>
-                </p>
-
-                {/* Buttons */}
-                {b.status === "pending" && (
-                  <div className="d-flex gap-2">
-                    <button
-                      className="btn btn-success w-100"
-                      onClick={() => handleStatus(b._id, "confirmed")}
+                {/* Card Header */}
+                <div className="card-header bg-transparent border-0 pb-0">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h5 className="fw-semibold mb-1">{b.userId?.name}</h5>
+                      <small className="text-muted">{b.userId?.email}</small>
+                    </div>
+                    <span
+                      className={`badge px-3 py-2 ${
+                        b.status === "confirmed"
+                          ? "bg-success"
+                          : b.status === "cancelled"
+                          ? "bg-danger"
+                          : "bg-warning text-dark"
+                      }`}
                     >
-                      Accept
-                    </button>
-
-                    <button
-                      className="btn btn-danger w-100"
-                      onClick={() => handleStatus(b._id, "cancelled")}
-                    >
-                      Reject
-                    </button>
+                      {b.status}
+                    </span>
                   </div>
-                )}
+                </div>
+
+                {/* Card Body */}
+                <div className="card-body">
+                  {/* Pooja Type */}
+                  {b.poojaType && (
+                    <div className="mb-3">
+                      <span className="badge bg-primary px-3 py-2">
+                        🕉️ {b.poojaType}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Booking Details */}
+                  <div className="booking-details">
+                    <p className="mb-2">
+                      <i className="fas fa-calendar-alt me-2 text-primary"></i>
+                      <strong>Date:</strong> {b.date}
+                    </p>
+                    <p className="mb-2">
+                      <i className="fas fa-clock me-2 text-primary"></i>
+                      <strong>Time:</strong> {b.time}
+                    </p>
+                    <p className="mb-3">
+                      <i className="fas fa-map-marker-alt me-2 text-primary"></i>
+                      <strong>Location:</strong> {b.address}
+                    </p>
+                  </div>
+
+                  {/* Action Buttons */}
+                  {b.status === "pending" && (
+                    <div className="d-flex gap-2 mt-3">
+                      <button
+                        className="btn btn-success flex-fill"
+                        onClick={() => handleStatus(b._id, "confirmed")}
+                      >
+                        <i className="fas fa-check me-1"></i>Accept
+                      </button>
+                      <button
+                        className="btn btn-outline-danger flex-fill"
+                        onClick={() => handleStatus(b._id, "cancelled")}
+                      >
+                        <i className="fas fa-times me-1"></i>Reject
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Card Footer */}
+                <div className="card-footer bg-transparent border-0 text-muted small text-end">
+                  Requested on {new Date(b.createdAt).toLocaleDateString()}
+                </div>
 
               </div>
             </div>
@@ -100,7 +132,8 @@ function PanditRequest() {
         </div>
       )}
     </div>
+    
   );
-}
+    }
 
 export default PanditRequest;

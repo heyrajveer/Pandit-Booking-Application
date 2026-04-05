@@ -31,6 +31,8 @@ function Navbar() {
      <Link className="me-3 text-decoration-none" to="/">Home</Link>
      <Link className="me-3 text-decoration-none" to="/about">About</Link>
      <Link className="me-3 text-decoration-none" to="/contact">Contact</Link>
+     <Link className="me-3 text-decoration-none" to="/chat">💬 Chat</Link>
+   
     {!user ? (
       <>
         <Link className="me-3 text-decoration-none" to="/auth">

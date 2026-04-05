@@ -7,6 +7,8 @@ import AppRoutes from './routes/AppRoutes'
 import { BrowserRouter } from 'react-router-dom'
 import Navbar from './compoments/Navbar'
 import Footer from './pages/footer'
+import ChatWidget from './compoments/ChatWidget'
+import BackButton from './compoments/BackButton'
 
 function App() {
 
@@ -15,9 +17,11 @@ function App() {
     <BrowserRouter>
     <ToastContainer/> 
      <Navbar/>
+     <BackButton/>
      <AppRoutes/>
      {/* <AuthPage/> */}
       <Footer/>
+      <ChatWidget/>
     </BrowserRouter>
   )
 }

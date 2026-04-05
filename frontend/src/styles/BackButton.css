@@ -1,0 +1,88 @@
+/* Back Button Styles */
+.back-button {
+  position: fixed;
+  top: 80px; /* Below navbar */
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.back-arrow {
+  font-size: 18px;
+  color: #333;
+  font-weight: normal;
+  line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .back-button {
+    top: 70px; /* Adjust for mobile navbar */
+    left: 15px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .back-arrow {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-button {
+    top: 65px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .back-arrow {
+    font-size: 14px;
+  }
+}
+
+  .back-text {
+    font-size: 13px;
+  }
+}
+
+/* Position variants */
+.back-button.top-left {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.back-button.top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.back-button.fixed-top {
+  position: fixed;
+  top: 90px; /* Below navbar */
+  left: 20px;
+  z-index: 999;
+}

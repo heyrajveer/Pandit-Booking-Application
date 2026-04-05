@@ -1,0 +1,38 @@
+/* Booking Page Styles */
+.booking-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.booking-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.booking-details p {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.booking-details i {
+  width: 16px;
+  text-align: center;
+}
+
+/* Filter dropdown styling */
+.form-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .booking-details p {
+    font-size: 0.9rem;
+  }
+
+  .booking-card .btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+}

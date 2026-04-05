@@ -19,6 +19,7 @@ import BookingPage from '../pages/Booking/BookingPage'
 import MyBooking from '../pages/Booking/MyBooking'
 import PanditRequest from '../pages/Booking/PanditRequest'
 import PujaDetails from '../pages/PoojaDetails'
+import ChatPage from '../pages/ChatPage'
 
 function AppRoutes() {
   return (
@@ -26,6 +27,7 @@ function AppRoutes() {
        <Route path='/' element={<Home/>}/>
        <Route path='/about' element={<About/>}/>
         <Route path='/contact' element={<Contact/>}/>
+        <Route path='/chat' element={<ChatPage/>}/>
         <Route path='/kathas' element={<Kathas/>}/>
         <Route path="/test" element={<TestApi/>}/>
         <Route path="/login" element={<Login/>}/>

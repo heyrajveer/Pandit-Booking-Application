@@ -70,7 +70,7 @@ function PanditProfile() {
     <div
       style={{
         background: "linear-gradient(135deg, #c8c5c5, #fafdff)",
-        minHeight: "82vh",
+        paddingBottom: "100px"
       }}
     >
       {/* 🔝 Header */}

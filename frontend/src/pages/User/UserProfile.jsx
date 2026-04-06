@@ -61,7 +61,7 @@ function UserProfile() {
 
 return (
   <div style={{marginTop:"70px"}}>
-  <div className="bg-light" style={{height:"82vh" }}>
+  <div className="bg-light" style={{paddingBottom: "100px" }}>
 
     {/* 🔝 Navbar */}
     <nav className="navbar navbar-dark bg-secondary px-4 shadow-sm">

@@ -32,8 +32,8 @@ function UserDashboard() {
             <div className="col-lg-8">
               <div className="d-flex align-items-center mb-4">
                 <div className="position-relative me-4">
-                  {user?.image ? (
-                    <img src={user.image} alt="User Avatar" className="rounded-circle border border-4 border-white shadow" style={{ width: "80px", height: "80px", objectFit: "cover" }} />
+                  {user?. profileImage ? (
+                    <img src={user?.profileImage} alt="User Avatar" className="rounded-circle border border-4 border-white shadow" style={{ width: "80px", height: "80px", objectFit: "cover" }} />
                   ) : <img src="/default-avatar.svg" alt="Default Avatar" className="rounded-circle border border-4 border-white shadow" style={{ width: "80px", height: "80px", objectFit: "cover" }} />}
                   <span className="position-absolute bottom-0 end-0 bg-success rounded-circle border border-3 border-white"
                         style={{ width: "20px", height: "20px" }}></span>

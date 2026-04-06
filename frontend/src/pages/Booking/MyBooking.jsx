@@ -1,26 +1,48 @@
 import { useEffect, useState } from "react";
 import { getMyBookings } from "../../api/bookingApi";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { showConfirm, showSuccess } from "../../utils/alert";
 import "../../styles/Booking.css";
 
 function MyBooking() {
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  
+  // Check authentication and fetch bookings
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    
+    // Redirect to auth if not logged in
+    if (!user) {
+      navigate("/auth?from=/my-bookings");
+      return;
+    }
+
+    setIsAuthenticated(true);
+
+    // Fetch bookings for logged-in user
     const fetchBookings = async () => {
       try {
         const res = await getMyBookings();
-        setBookings(res.data);
+        setBookings(res.data || []);
       } catch (err) {
         console.error(err);
+        if (err.response?.status === 401) {
+          navigate("/auth");
+        } else {
+          alert("Unable to fetch bookings");
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchBookings();
-  }, []);
+  }, [navigate]);
 
   // Filter bookings based on selected filter
   // const getFilteredBookings = () => {
@@ -105,6 +127,20 @@ function MyBooking() {
     console.error(err.response?.data || err.message);
   }
 };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="container py-5" style={{ marginTop: "80px", textAlign: "center" }}>
+        <h5 className="text-muted">Loading bookings...</h5>
+      </div>
+    );
+  }
+
+  // Protected route - user must be authenticated
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="container py-5" style={{ marginTop: "80px" }}>

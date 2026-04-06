@@ -5,11 +5,16 @@ import sendEmail from "../utils/sendEmail.js";
 
 export const createBooking = async (req, res) => {
   try {
-    const { panditId, date, time, address } = req.body;
+    const { panditId, date, time, address, poojaType } = req.body;
     const userId = req.user?.id;
 
     if (!userId) {
       return res.status(400).json({ error: "User not found in token" });
+    }
+
+    // ✅ Validate required fields
+    if (!panditId || !date || !time || !address) {
+      return res.status(400).json({ error: "Missing required fields" });
     }
 
     // ✅ fetch pandit
@@ -25,6 +30,7 @@ export const createBooking = async (req, res) => {
       date,
       time,
       address,
+      poojaType: poojaType || "General Pooja"
     });
 
     // ✅ get email from pandit's user
@@ -37,8 +43,10 @@ export const createBooking = async (req, res) => {
         "New Booking Request",
         `
         <h2>New Booking</h2>
+        <p>Pooja Type: ${poojaType || "General Pooja"}</p>
         <p>Date: ${date}</p>
         <p>Time: ${time}</p>
+        <p>Address: ${address}</p>
       `
       );
     }

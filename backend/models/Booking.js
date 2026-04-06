@@ -26,6 +26,10 @@ const bookingSchema = new mongoose.Schema({
   phone: {
     type: String
   },
+  poojaType: {
+    type: String,
+    default: "General Pooja"
+  },
   status: {
     type: String,
     enum: ["pending", "confirmed", "cancelled"],

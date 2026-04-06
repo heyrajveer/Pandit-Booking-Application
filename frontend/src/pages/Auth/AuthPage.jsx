@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user") || "null");
@@ -94,9 +95,9 @@ function AuthPage() {
 
               {/* FORM */}
               {isLogin ? (
-                <Login setIsLogin={setIsLogin} />
+                <Login setIsLogin={setIsLogin} from={location.state?.from} />
               ) : (
-                <Register setIsLogin={setIsLogin} />
+                <Register setIsLogin={setIsLogin} from={location.state?.from} />
               )}
 
               {/* TOGGLE */}

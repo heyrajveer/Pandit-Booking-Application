@@ -1,26 +1,53 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styles/Booking.css";
 
 function PanditRequest() {
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
-
-  const fetchBookings = async () => {
-    try {
-      const res = await axios.get(
-        "http://localhost:8000/api/booking/my-bookings",
-        { withCredentials: true }
-      );
-      console.log(res.data);
-      setBookings(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    // Check if user is logged in and is a pandit
+    const user = JSON.parse(localStorage.getItem("user"));
+    
+    if (!user) {
+      navigate("/auth?from=/pandit/requests");
+      return;
+    }
+
+    if (user.role !== "pandit") {
+      alert("Only pandits can access booking requests");
+      navigate("/");
+      return;
+    }
+
+    setIsAuthenticated(true);
+
+    const fetchBookings = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8000/api/booking/my-bookings",
+          { withCredentials: true }
+        );
+        console.log(res.data);
+        setBookings(res.data);
+      } catch (err) {
+        console.error(err);
+        if (err.response?.status === 401) {
+          navigate("/auth");
+        } else {
+          alert("Unable to fetch booking requests");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchBookings();
-  }, []);
+  }, [navigate]);
 
   // ✅ Accept / Reject
   const handleStatus = async (id, status) => {
@@ -39,14 +66,31 @@ function PanditRequest() {
 
   return (
     <div className="container py-5" style={{ marginTop: "80px" }}>
+      {/* Loading state */}
+      {loading && (
+        <div className="text-center">
+          <h5 className="text-muted">Loading booking requests...</h5>
+        </div>
+      )}
+
+      {/* Protected route check */}
+      {!loading && !isAuthenticated && (
+        <div className="text-center">
+          <h5 className="text-muted">Redirecting...</h5>
+        </div>
+      )}
+
+      {/* Main content - only show if authenticated and not loading */}
+      {!loading && isAuthenticated && (
+        <>
       <div className="text-center mb-5">
-        <h2 className="fw-bold">Booking Requests</h2>
-        <p className="text-muted">Manage your booking requests</p>
+        <h2 className="fw-bold">Booking Requests 📋</h2>
+        <p className="text-muted">Manage your incoming booking requests from users</p>
       </div>
 
       {bookings.length === 0 ? (
         <div className="text-center">
-          <h5 className="text-muted">No requests found</h5>
+          <h5 className="text-muted">No booking requests found</h5>
         </div>
       ) : (
         <div className="row g-4">
@@ -131,9 +175,10 @@ function PanditRequest() {
           ))}
         </div>
       )}
+      </>
+      )}
     </div>
-    
   );
-    }
+}
 
 export default PanditRequest;

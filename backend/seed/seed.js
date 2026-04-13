@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 import connectDB from "../config/db.js";
 import User from "../models/User.js";
 import Pandit from "../models/Pandit.js";
@@ -10,28 +11,34 @@ async function seedDB() {
   try {
     await connectDB();
 
-    // Delete only existing pandit users and their pandit profiles
+    console.log("Deleting old pandit users and profiles...");
     await Pandit.deleteMany({});
     await User.deleteMany({ role: "pandit" });
 
-    for (const item of panditSeedData) {
-      const user = await User.create({
-        name: item.name,
-        email: item.email,
-        password: "123456",
-        role: "pandit",
-        city: item.city,
-        phone: item.phone
-      });
+    const hashedPassword = await bcrypt.hash("123456", 10);
 
-      await Pandit.create({
-        userId: user._id,
-        experience: item.experience,
-        price: item.price,
-        services: item.services,
-        description: item.description || "Experienced pandit"
-      });
-    }
+    const userDocs = panditSeedData.map((item) => ({
+      name: item.name,
+      email: item.email,
+      password: hashedPassword,
+      role: "pandit",
+      city: item.city,
+      phone: item.phone
+    }));
+
+    console.log(`Inserting ${userDocs.length} pandit users...`);
+    const users = await User.insertMany(userDocs, { ordered: true });
+
+    const panditDocs = users.map((user, index) => ({
+      userId: user._id,
+      experience: panditSeedData[index].experience,
+      price: panditSeedData[index].price,
+      services: panditSeedData[index].services,
+      description: panditSeedData[index].description || "Experienced pandit"
+    }));
+
+    console.log(`Inserting ${panditDocs.length} pandit profiles...`);
+    await Pandit.insertMany(panditDocs, { ordered: true });
 
     console.log("✅ Seeded pandit data successfully");
     process.exit(0);

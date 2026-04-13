@@ -95,12 +95,14 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: false,        // production me true
       sameSite: "lax",
+      maxAge: 15 * 60 * 1000,
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     // 🔥 send only safe data
@@ -114,6 +116,40 @@ export const login = async (req, res) => {
   }
 };
 export const logout = (req, res) => {
-  res.clearCookie("token"); // 🔥 remove cookie
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    sameSite: "lax",
+  });
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    sameSite: "lax",
+  });
   res.json({ message: "Logged out successfully" });
+};
+
+export const refreshToken = (req, res) => {
+  try {
+    const token = req.cookies?.refreshToken;
+    if (!token) {
+      return res.status(401).json({ message: "Refresh token not found" });
+    }
+
+    const decoded = jwt.verify(token, process.env.REFRESH_SECRET);
+    const accessToken = jwt.sign(
+      { id: decoded.id, role: decoded.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.json({ message: "Token refreshed" });
+  } catch (error) {
+    return res.status(401).json({ message: "Refresh failed" });
+  }
 };

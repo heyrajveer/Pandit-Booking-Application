@@ -43,6 +43,10 @@ function UserProfile() {
       formData.append("profileImage", selectedFile);
       const uploadRes = await uploadUserProfileImage(formData);
       updatedUser = uploadRes.data;
+    //    updatedUser = {
+    // ...updatedUser,
+    // profileImage: uploadRes.data.profileImage
+  // };
       setPreviewImage(uploadRes.data.profileImage || "");
     }
 
@@ -61,7 +65,7 @@ function UserProfile() {
 
 return (
   <div style={{marginTop:"70px"}}>
-  <div className="bg-light" style={{paddingBottom: "100px" }}>
+  <div className="bg-light" style={{height:"82vh" }}>
 
     {/* 🔝 Navbar */}
     <nav className="navbar navbar-dark bg-secondary px-4 shadow-sm">

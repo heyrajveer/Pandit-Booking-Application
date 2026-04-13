@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { showError, showSuccess } from "../../utils/alert";
 
 function BookingPage() {
   const { id } = useParams(); // 👉 panditId
@@ -58,7 +59,7 @@ function BookingPage() {
   const handleBooking = async () => {
     try {
       if (!validateForm()) {
-        toast.error("Please fill all required fields");
+        showError.error("Please fill all required fields");
         return;
       }
 
@@ -79,7 +80,7 @@ function BookingPage() {
       );
 
       if (response.status === 201) {
-        toast.success("Booking Confirmed! ✅ You will receive updates soon.");
+        showSuccess("Booking Confirmed! ✅ You will receive updates soon.");
         navigate("/my-bookings");
       }
 
@@ -89,7 +90,7 @@ function BookingPage() {
         toast.error("Please login to continue");
         navigate("/auth");
       } else {
-        toast.error(err.response?.data?.error || "Booking Failed ❌");
+        showError(err.response?.data?.error || "Booking Failed ❌");
       }
     } finally {
       setIsSubmitting(false);

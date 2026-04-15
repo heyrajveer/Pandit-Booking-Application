@@ -31,18 +31,42 @@ export  const createPandit = async (req, res) => {
 
 
 // 🔹 GET ALL
+// export const getPandits = async (req, res) => {
+//   try {
+//     const pandits = await Pandit.find()
+//       .populate("userId", "name city phone");
+
+//     res.json(pandits);
+
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
 export const getPandits = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
     const pandits = await Pandit.find()
-      .populate("userId", "name city phone");
+      .skip(skip)
+      .limit(limit);
 
-    res.json(pandits);
+    const total = await Pandit.countDocuments();
 
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(200).json({
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      data: pandits
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
-
 
 // 🔹 GET BY ID
 export const getPanditById = async (req, res) => {
@@ -148,25 +172,54 @@ export const deletePandit = async (req, res) => {
 
 
 //filter pandit by city
+// export const getPanditByCity = async (req, res) => {
+//   try {
+//     const { city } = req.query;
+
+//     let pandits = await Pandit.find()
+//       .populate("userId", "name city phone");
+// //Why not direct Mongo filter?
+
+//     // 🔥 filter after populate
+//     //Because:city is inside user collection (not Pandit)
+//     if (city) {
+//       pandits = pandits.filter((p) =>
+//         p.userId?.city?.toLowerCase().includes(city.toLowerCase())
+//       );
+//     }
+
+//     res.json(pandits);
+
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 export const getPanditByCity = async (req, res) => {
   try {
-    const { city } = req.query;
+    const city = req.query.city;
 
-    let pandits = await Pandit.find()
-      .populate("userId", "name city phone");
-//Why not direct Mongo filter?
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-    // 🔥 filter after populate
-    //Because:city is inside user collection (not Pandit)
-    if (city) {
-      pandits = pandits.filter((p) =>
-        p.userId?.city?.toLowerCase().includes(city.toLowerCase())
-      );
-    }
+    const pandits = await Pandit.find({
+      city: { $regex: `^${city}$`, $options: "i" } // ✅ FIX (case insensitive)
+    })
+      .skip(skip)
+      .limit(limit);
 
-    res.json(pandits);
+    const total = await Pandit.countDocuments({
+      city: { $regex: `^${city}$`, $options: "i" }
+    });
 
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(200).json({
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      data: pandits
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

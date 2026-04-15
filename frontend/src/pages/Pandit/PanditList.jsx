@@ -3,6 +3,8 @@ import { getAllPandits, getPanditByCity } from "../../api/panditApi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function PanditList() {
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [pandits, setPandits] = useState([]);
   const [filteredPandits, setFilteredPandits] = useState([]);
   const [search, setSearch] = useState("");
@@ -17,10 +19,14 @@ function PanditList() {
     const fetchPandits = async () => {
       try {
         setLoading(true);
-        const res = city ? await getPanditByCity(city) : await getAllPandits();
-
-        setPandits(res.data);
-        setFilteredPandits(res.data);
+        // const res = city ? await getPanditByCity(city) : await getAllPandits();
+        const res = city
+          ? await getPanditByCity(city, page, 10)
+          : await getAllPandits(page, 10);
+        const data = res.data.data || [];
+        setTotalPages(res.data.totalPages || 1); // KEEP THIS
+        setPandits(data);
+        setFilteredPandits(data);
       } catch (err) {
         console.log(err);
       } finally {
@@ -29,23 +35,36 @@ function PanditList() {
     };
 
     fetchPandits();
-  }, [city]);
+  }, [city, page]);
 
   // 🔍 Filter by services
   useEffect(() => {
-    const filtered = pandits.filter((p) =>
-      p.services?.some((service) =>
-        service.toLowerCase().includes(search.toLowerCase()),
-      ),
-    );
+    const filtered = (pandits || []).filter((p) => {
+      if (!search) return true;
 
+      return p.services?.some((service) =>
+        service.toLowerCase().includes(search.toLowerCase()),
+      );
+    });
     setFilteredPandits(filtered);
   }, [search, pandits]);
 
   return (
-    <div className="min-vh-100" style={{ marginTop: "70px", background: "linear-gradient(135deg, #f0fbfd, #d9f3f7)" }}>
+    <div
+      className="min-vh-100"
+      style={{
+        marginTop: "70px",
+        background: "linear-gradient(135deg, #f0fbfd, #d9f3f7)",
+      }}
+    >
       <div className="container py-5">
-        <div className="rounded-4 p-4 p-lg-5 mb-5" style={{ background: "rgba(255,255,255,0.92)", boxShadow: "0 30px 80px rgba(30, 70, 100, 0.12)" }}>
+        <div
+          className="rounded-4 p-4 p-lg-5 mb-5"
+          style={{
+            background: "rgba(255,255,255,0.92)",
+            boxShadow: "0 30px 80px rgba(30, 70, 100, 0.12)",
+          }}
+        >
           <div className="row align-items-center gy-4">
             <div className="col-lg-7">
               <span className="badge bg-warning text-dark rounded-pill mb-3">
@@ -55,8 +74,9 @@ function PanditList() {
                 Book trusted pandits for puja, marriage, havan and ceremonies.
               </h1>
               <p className="text-muted mb-4">
-                Find verified pandits with clear pricing, service details and ratings.
-                Search by service and compare the best profiles for your event.
+                Find verified pandits with clear pricing, service details and
+                ratings. Search by service and compare the best profiles for
+                your event.
               </p>
               <div className="d-flex flex-wrap gap-2">
                 <span className="badge bg-white text-success border px-3 py-2">
@@ -71,7 +91,10 @@ function PanditList() {
               </div>
             </div>
             <div className="col-lg-5 text-lg-end">
-              <div className="rounded-4 overflow-hidden shadow-sm" style={{ maxWidth: "360px", margin: "0 auto" }}>
+              <div
+                className="rounded-4 overflow-hidden shadow-sm"
+                style={{ maxWidth: "360px", margin: "0 auto" }}
+              >
                 <img
                   src="https://thumbs.dreamstime.com/z/pandit-vector-illustration-india-indian-havan-hindu-hindi-worship-priest-sadhu-cartoon-character-pandit-ji-cartoon-character-134357495.jpg?w=768"
                   alt="pandit booking"
@@ -86,7 +109,10 @@ function PanditList() {
         <div className="row align-items-center mb-4">
           <div className="col-md-8">
             <div className="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border border-white bg-white">
-              <span className="input-group-text bg-white border-0 pe-3" style={{ fontSize: "1.1rem" }}>
+              <span
+                className="input-group-text bg-white border-0 pe-3"
+                style={{ fontSize: "1.1rem" }}
+              >
                 🔍
               </span>
               <input
@@ -101,7 +127,7 @@ function PanditList() {
           </div>
           <div className="col-md-4 text-md-end mt-3 mt-md-0">
             <span className="badge bg-light text-dark shadow-sm px-4 py-2">
-              {filteredPandits.length} available
+              {filteredPandits?.length || 0 } available
               {city ? ` in ${city}` : ""}
             </span>
           </div>
@@ -112,7 +138,7 @@ function PanditList() {
           <div className="text-center py-5">
             <div className="spinner-border text-primary"></div>
           </div>
-        ) : filteredPandits.length === 0 ? (
+        ) : filteredPandits?.length === 0 ? (
           /* Empty State */
           <div className="text-center py-5">
             <h5 className="text-muted">No Pandits Found</h5>
@@ -135,11 +161,9 @@ function PanditList() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateY(-6px)";
-        
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateY(0)";
-                  
                   }}
                 >
                   {/* Image */}
@@ -159,7 +183,9 @@ function PanditList() {
 
                   {/* Body */}
                   <div className="card-body text-center">
-                    <h5 className="fw-semibold">{p.userId?.name || "Pandit"}</h5>
+                    <h5 className="fw-semibold">
+                      {p.userId?.name || "Pandit"}
+                    </h5>
 
                     <p className="text-muted small">
                       {p.experience} experience
@@ -182,7 +208,7 @@ function PanditList() {
                     <button
                       className="btn  w-100 rounded-pill fw-semibold"
                       onClick={() => navigate(`/pandits/${p._id}`)}
-                      style={{ background: "rgb(135, 223, 233)"  }}
+                      style={{ background: "rgb(135, 223, 233)" }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background =
                           "linear-gradient(135deg, #5ac8d7, #3bb4c7)";
@@ -203,7 +229,29 @@ function PanditList() {
           </div>
         )}
       </div>
+      <div className="d-flex justify-content-center mt-4 gap-3">
+  <button
+    className="btn btn-outline-primary"
+    disabled={page === 1}
+    onClick={() => setPage(page - 1)}
+  >
+    Prev
+  </button>
+
+  <span className="fw-bold">
+    Page {page} of {totalPages}
+  </span>
+
+  <button
+    className="btn btn-outline-primary"
+    disabled={page === totalPages}
+    onClick={() => setPage(page + 1)}
+  >
+    Next
+  </button>
+</div>
     </div>
+    
   );
 }
 

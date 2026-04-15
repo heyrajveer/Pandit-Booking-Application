@@ -1,7 +1,10 @@
 import API from "./axios";
 
 // 🔹 get all pandits
-export const getAllPandits = () => API.get("/pandit");
+// export const getAllPandits = () => API.get("/pandit"); earlier
+export const getAllPandits = (page = 1, limit = 10) => {
+  return API.get(`/pandit?page=${page}&limit=${limit}`);
+};
 
 // 🔹 get single pandit
 export const getPanditProfileById = (id) => API.get(`/pandit/${id}`);
@@ -20,6 +23,6 @@ export const uploadProfileImage = (formData) =>
 // 🔹 update pandit profile
 export const updatePanditProfile = (data) => API.put("/pandit/update", data);
 
-export const getPanditByCity = (city) => {
-  return API.get(`/pandit/city/search?city=${city}`);
+export const getPanditByCity = (city, page = 1, limit = 10) => {
+  return API.get(`/pandit/city/search?city=${city}&page=${page}&limit=${limit}`);
 };

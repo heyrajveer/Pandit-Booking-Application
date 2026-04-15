@@ -7,6 +7,12 @@ const panditSchema = new mongoose.Schema({
     unique: true
   },
 
+  city: {
+    type: String,
+    default: "",
+    index:true
+  },
+
   experience: {
     type: String,
     default: ""

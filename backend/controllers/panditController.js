@@ -13,7 +13,8 @@ export  const createPandit = async (req, res) => {
 
     const pandit = new Pandit({
       ...req.body,
-      userId: req.user.id
+      userId: req.user.id,
+      city: req.user.city,
     });
 
     await pandit.save();

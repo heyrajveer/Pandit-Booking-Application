@@ -31,6 +31,7 @@ async function seedDB() {
 
     const panditDocs = users.map((user, index) => ({
       userId: user._id,
+      city: user.city,
       experience: panditSeedData[index].experience,
       price: panditSeedData[index].price,
       services: panditSeedData[index].services,
@@ -39,7 +40,7 @@ async function seedDB() {
 
     console.log(`Inserting ${panditDocs.length} pandit profiles...`);
     await Pandit.insertMany(panditDocs, { ordered: true });
-
+    
     console.log("✅ Seeded pandit data successfully");
     process.exit(0);
   } catch (error) {

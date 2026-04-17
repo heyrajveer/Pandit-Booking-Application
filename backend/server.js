@@ -64,5 +64,5 @@ app.get("/api/test", (req, res) => {
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`Server running at: http://localhost:${port}`);
+  console.log(`pandit application backend Server running at: http://localhost:${port}`);
 });

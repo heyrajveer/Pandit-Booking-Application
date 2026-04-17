@@ -42,6 +42,11 @@ function MyBooking() {
     };
 
     fetchBookings();
+    const interval = setInterval(() => {
+    fetchBookings();
+  }, 5000); // every 5 sec
+
+  return () => clearInterval(interval);
   }, [navigate]);
 
   // Filter bookings based on selected filter

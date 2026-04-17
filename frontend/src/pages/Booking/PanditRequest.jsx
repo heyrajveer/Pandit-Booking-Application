@@ -9,24 +9,7 @@ function PanditRequest() {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    // Check if user is logged in and is a pandit
-    const user = JSON.parse(localStorage.getItem("user"));
-    
-    if (!user) {
-      navigate("/auth?from=/pandit/requests");
-      return;
-    }
-
-    if (user.role !== "pandit") {
-      alert("Only pandits can access booking requests");
-      navigate("/");
-      return;
-    }
-
-    setIsAuthenticated(true);
-
-    const fetchBookings = async () => {
+  const fetchBookings = async () => {
       try {
         const res = await axios.get(
           "http://localhost:8000/api/booking/my-bookings",
@@ -45,8 +28,32 @@ function PanditRequest() {
         setLoading(false);
       }
     };
+  useEffect(() => {
+    // Check if user is logged in and is a pandit
+    const user = JSON.parse(localStorage.getItem("user"));
+    
+    if (!user) {
+      navigate("/auth?from=/pandit/requests");
+      return;
+    }
+
+    if (user.role !== "pandit") {
+      alert("Only pandits can access booking requests");
+      navigate("/");
+      return;
+    }
+
+    setIsAuthenticated(true);
+
+    
 
     fetchBookings();
+    //ye humse isliye use kra he taki pandit ko real time me apne booking request dikhe without refresh krne ke liye
+    const interval = setInterval(() => {
+    fetchBookings();
+  }, 5000); // every 5 sec
+
+  return () => clearInterval(interval);
   }, [navigate]);
 
   // ✅ Accept / Reject

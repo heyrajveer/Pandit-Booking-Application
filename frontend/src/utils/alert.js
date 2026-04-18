@@ -19,3 +19,13 @@ export const showConfirm = async (msg) => {
 
   return result.isConfirmed;
 };
+export const showLoading = (msg = "Please wait...") => {
+  Swal.fire({
+    title: msg,
+    allowOutsideClick: false,
+    showConfirmButton: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+};

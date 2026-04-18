@@ -6,7 +6,7 @@ import {
   createPanditProfile,
   uploadProfileImage,
 } from "../../api/panditApi";
-
+import { showSuccess, showError, showLoading } from "../../utils/alert";
 function PanditProfile() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user") || "null");
@@ -34,34 +34,119 @@ function PanditProfile() {
 
   const isEdit = pandit && pandit._id;
 
-  const handleSubmit = async () => {
-    try {
-      const data = {
-        services: pandit.services,
-        experience: pandit.experience,
-        price: pandit.price,
-        description: pandit.description,
-      };
+  // const handleSubmit = async () => {
+  //   try {
+  //     const data = {
+  //       services: pandit.services,
+  //       experience: pandit.experience,
+  //       price: pandit.price,
+  //       description: pandit.description,
+  //     };
 
-      if (isEdit) {
-        await updatePanditProfile(data);
-      } else {
-        await createPanditProfile(data);
-      }
+  //     if (isEdit) {
+  //       await updatePanditProfile(data);
+  //     } else {
+  //       await createPanditProfile(data);
+  //     }
 
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append("profileImage", selectedFile);
-        await uploadProfileImage(formData);
-      }
+  //     if (selectedFile) {
+  //       const formData = new FormData();
+  //       formData.append("profileImage", selectedFile);
+  //       await uploadProfileImage(formData);
+  //     }
 
-      alert("Profile saved ✅");
-      navigate("/pandit-dashboard");
-    } catch (err) {
-      console.log(err);
-      alert("Unable to save profile. Please try again.");
+  //     alert("Profile saved ✅");
+  //     navigate("/pandit-dashboard");
+  //   } catch (err) {
+  //     console.log(err);
+  //     alert("Unable to save profile. Please try again.");
+  //   }
+  // };
+//   const handleSubmit = async () => {
+//   try {
+//     const data = {
+//       services: pandit?.services || [],
+//       experience: pandit?.experience || "",
+//       price: pandit?.price || "",
+//       description: pandit?.description || "",
+//     };
+
+//     let updatedPandit;
+
+//     if (isEdit) {
+//       const res = await updatePanditProfile(data);
+//       updatedPandit = res.data;
+//     } else {
+//       const res = await createPanditProfile(data);
+//       updatedPandit = res.data;
+//     }
+
+//     if (selectedFile) {
+//       const formData = new FormData();
+//       formData.append("profileImage", selectedFile);
+
+//       const uploadRes = await uploadProfileImage(formData);
+
+//       console.log("UPLOAD RESPONSE:", uploadRes.data);
+
+//       // 🔥 SAME LOGIC AS USER PROFILE
+//       updatedPandit = uploadRes.data;
+
+//       setPreviewImage(uploadRes.data?.profileImage || "");
+//     }
+
+//     setPandit(updatedPandit); // ✅ IMPORTANT
+//     console.log("UPDATED PANDIT:", pandit);
+//     alert("Profile saved ✅");
+
+//   } catch (err) {
+//     console.log(err);
+//     alert("Error saving profile");
+//   }
+// };
+const handleSubmit = async () => {
+  try {
+    showLoading("Saving profile..."); // 🔥 loader
+
+    const data = {
+      services: pandit?.services || [],
+      experience: pandit?.experience || "",
+      price: pandit?.price || "",
+      description: pandit?.description || "",
+    };
+
+    let updatedPandit;
+
+    if (isEdit) {
+      const res = await updatePanditProfile(data);
+      updatedPandit = res.data;
+    } else {
+      const res = await createPanditProfile(data);
+      updatedPandit = res.data;
     }
-  };
+
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("profileImage", selectedFile);
+
+      const uploadRes = await uploadProfileImage(formData);
+
+      console.log("UPLOAD RESPONSE:", uploadRes.data);
+
+      updatedPandit = uploadRes.data;
+
+      setPreviewImage(uploadRes.data?.profileImage || "");
+    }
+
+    setPandit(updatedPandit);
+
+    showSuccess("Profile saved ✅"); // 🔥 success
+
+  } catch (err) {
+    console.log(err);
+    showError("Error saving profile ❌"); // 🔥 error
+  }
+};
 
   if (loading) return <h2 className="text-center mt-5">Loading...</h2>;
 

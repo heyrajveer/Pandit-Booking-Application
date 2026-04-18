@@ -1,5 +1,5 @@
 import express from "express";
-import multer from "multer";
+import upload from "../middlewares/upload.js";
 import {verifyToken }from "../middlewares/authMiddleware.js";
 import {roleMiddleware} from "../middlewares/roleMiddleware.js";
 
@@ -14,18 +14,6 @@ import {
   getPanditByCity
 } from "../controllers/panditController.js";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads");
-  },
-  filename: (req, file, cb) => {
-    const timestamp = Date.now();
-    const safeName = file.originalname.replace(/\s+/g, "-").toLowerCase();
-    cb(null, `${timestamp}-${safeName}`);
-  },
-});
-
-const upload = multer({ storage });
 
 const router = express.Router();
 
@@ -49,6 +37,7 @@ router.post(
   upload.single("profileImage"),
   uploadPanditProfileImage,
 );
+
 
 // ⚠️ IMPORTANT: place this BEFORE /:id
 router.get("/city/search", getPanditByCity);

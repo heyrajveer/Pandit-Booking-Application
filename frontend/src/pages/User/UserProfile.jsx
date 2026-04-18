@@ -6,7 +6,7 @@ import {
   uploadUserProfileImage,
 } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
-
+import { showSuccess, showError, showLoading } from "../../utils/alert";
 function UserProfile() {
   const navigate = useNavigate();
   const userr = JSON.parse(localStorage.getItem("user") || "null");
@@ -33,20 +33,22 @@ function UserProfile() {
     fetchUser();
   },[  navigate]);
 
- const handleUpdate = async () => {
+const handleUpdate = async () => {
   try {
+    // 🔥 LOADING
+    showLoading("Updating profile...");
+
     const res = await updateUserProfile(user);
     let updatedUser = res.data;
 
     if (selectedFile) {
       const formData = new FormData();
       formData.append("profileImage", selectedFile);
+
       const uploadRes = await uploadUserProfileImage(formData);
+
       updatedUser = uploadRes.data;
-    //    updatedUser = {
-    // ...updatedUser,
-    // profileImage: uploadRes.data.profileImage
-  // };
+
       setPreviewImage(uploadRes.data.profileImage || "");
     }
 
@@ -56,10 +58,14 @@ function UserProfile() {
     // ✅ update localStorage
     localStorage.setItem("user", JSON.stringify(updatedUser));
 
-    toast.success("Update Profile successful ✅");
+    // 🔥 SUCCESS
+    showSuccess("Profile updated successfully ✅");
+
   } catch (err) {
     console.log(err);
-    toast.error("Unable to update profile. Please try again.");
+
+    // 🔥 ERROR
+    showError("Unable to update profile ❌");
   }
 };
 

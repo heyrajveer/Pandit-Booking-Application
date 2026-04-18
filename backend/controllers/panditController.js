@@ -1,4 +1,6 @@
 import Pandit from "../models/Pandit.js";
+import cloudinary from "../config/cloudinary.js";
+import streamifier from "streamifier";
 
 // 🔹 CREATE
 export  const createPandit = async (req, res) => {
@@ -129,30 +131,70 @@ export const updatePanditProfile = async (req, res) => {
 };
 
 // 🔹 UPLOAD PROFILE IMAGE
+// export const uploadPanditProfileImage = async (req, res) => {
+//   try {
+//     if (!req.file) {
+//       return res.status(400).json({ message: "No file uploaded" });
+//     }
+
+//     // const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+//     const imageUrl = `${process.env.BACKEND_URL}/uploads/${req.file.filename}`;
+//     const pandit = await Pandit.findOneAndUpdate(
+//       { userId: req.user.id },
+//       { profileImage: imageUrl },
+//       { new: true }
+//     ).populate("userId", "name email city phone");
+
+//     if (!pandit) {
+//       return res.status(404).json({ message: "Pandit profile not found" });
+//     }
+
+//     res.status(200).json(pandit);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
+
+
 export const uploadPanditProfileImage = async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    // const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
-    const imageUrl = `${process.env.BACKEND_URL}/uploads/${req.file.filename}`;
+    const streamUpload = () => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "pandit-app/pandits" },
+          (error, result) => {
+            if (result) resolve(result);
+            else reject(error);
+          }
+        );
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+    };
+
+    const result = await streamUpload();
+
+    const imageUrl = result.secure_url;
+
     const pandit = await Pandit.findOneAndUpdate(
-      { userId: req.user.id },
+      { userId: req.user.id }, // ✅ FIXED
       { profileImage: imageUrl },
-      { new: true }
+      {
+        returnDocument: "after",
+        upsert: true,
+      }
     ).populate("userId", "name email city phone");
 
-    if (!pandit) {
-      return res.status(404).json({ message: "Pandit profile not found" });
-    }
-
     res.status(200).json(pandit);
+
   } catch (err) {
+    console.log("UPLOAD ERROR:", err);
     res.status(500).json({ message: err.message });
   }
 };
-
 
 // 🔹 DELETEbad me kaam krunga
 export const deletePandit = async (req, res) => {
@@ -171,29 +213,6 @@ export const deletePandit = async (req, res) => {
 };
 
 
-//filter pandit by city
-// export const getPanditByCity = async (req, res) => {
-//   try {
-//     const { city } = req.query;
-
-//     let pandits = await Pandit.find()
-//       .populate("userId", "name city phone");
-// //Why not direct Mongo filter?
-
-//     // 🔥 filter after populate
-//     //Because:city is inside user collection (not Pandit)
-//     if (city) {
-//       pandits = pandits.filter((p) =>
-//         p.userId?.city?.toLowerCase().includes(city.toLowerCase())
-//       );
-//     }
-
-//     res.json(pandits);
-
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
 export const getPanditByCity = async (req, res) => {
   try {
     const city = req.query.city;

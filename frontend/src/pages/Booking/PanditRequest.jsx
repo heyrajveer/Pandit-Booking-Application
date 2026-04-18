@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
+import {
+  panditBookingRequests,
+  updateBookingStatus
+} from "../../api/bookingApi";
 import "../../styles/Booking.css";
 
 function PanditRequest() {
@@ -11,11 +15,8 @@ function PanditRequest() {
 
   const fetchBookings = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:8000/api/booking/my-bookings",
-          { withCredentials: true }
-        );
-        console.log(res.data);
+        const res = await panditBookingRequests();
+        // console.log(res.data);
         setBookings(res.data);
       } catch (err) {
         console.error(err);
@@ -59,11 +60,7 @@ function PanditRequest() {
   // ✅ Accept / Reject
   const handleStatus = async (id, status) => {
     try {
-      await axios.patch(
-        `http://localhost:8000/api/booking/${id}/status`,
-        { status },
-        { withCredentials: true }
-      );
+      await updateBookingStatus(id, status);
 
       fetchBookings(); // refresh data
     } catch (err) {

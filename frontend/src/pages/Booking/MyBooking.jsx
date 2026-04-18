@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getMyBookings } from "../../api/bookingApi";
+
+import { cancelBookingApi, getMyBookings } from "../../api/bookingApi";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { showConfirm, showSuccess } from "../../utils/alert";
 import "../../styles/Booking.css";
 
@@ -42,11 +42,6 @@ function MyBooking() {
     };
 
     fetchBookings();
-    const interval = setInterval(() => {
-    fetchBookings();
-  }, 5000); // every 5 sec
-
-  return () => clearInterval(interval);
   }, [navigate]);
 
   // Filter bookings based on selected filter
@@ -116,11 +111,8 @@ function MyBooking() {
       return;
     }
     
-    await axios.patch(
-      `http://localhost:8000/api/booking/${id}/cancel`,
-      { status: "cancelled" },   // ✅ same API
-      { withCredentials: true }
-    );
+
+    await cancelBookingApi(id);
 
     showSuccess("Booking cancelled successfully ❌");
 

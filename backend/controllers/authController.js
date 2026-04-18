@@ -93,15 +93,15 @@ export const login = async (req, res) => {
     // 🔥 set cookies
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: false,        // production me true
-      sameSite: "lax",
+      secure: true,        // production me true wese false
+      sameSite: "none",   // production me "none" wese "lax"
       maxAge: 15 * 60 * 1000,
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -116,20 +116,22 @@ export const login = async (req, res) => {
   }
 };
 export const logout = (req, res) => {
-  res.clearCookie("accessToken", {
-    httpOnly: true,
-    sameSite: "lax",
-  });
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    sameSite: "lax",
-  });
+res.clearCookie("accessToken", {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
+res.clearCookie("refreshToken", {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
   res.json({ message: "Logged out successfully" });
 };
 
-export const refreshToken = (req, res) => {
+export const refreshToken = async (req, res) => {
   try {
-    const token = req.cookies?.refreshToken;
+    const token = await req.cookies?.refreshToken;
     if (!token) {
       return res.status(401).json({ message: "Refresh token not found" });
     }
@@ -143,8 +145,8 @@ export const refreshToken = (req, res) => {
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 15 * 60 * 1000,
     });
 
@@ -153,3 +155,4 @@ export const refreshToken = (req, res) => {
     return res.status(401).json({ message: "Refresh failed" });
   }
 };
+

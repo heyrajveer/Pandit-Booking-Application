@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { createBooking } from "../../api/bookingApi";
 import { toast } from "react-toastify";
 import { showError, showSuccess } from "../../utils/alert";
 
@@ -22,7 +22,9 @@ function BookingPage() {
     }
     // Only allow "user" or "admin" role to book, not "pandit"
     if (user.role === "pandit") {
-      toast.error("Pandits cannot book other pandits. Please use user account.");
+      toast.error(
+        "Pandits cannot book other pandits. Please use user account.",
+      );
       navigate("/");
       return;
     }
@@ -43,7 +45,7 @@ function BookingPage() {
     "Vivah (Wedding Rituals)",
     "Mundan (Head Shaving)",
     "Jagran (Night Vigil)",
-    "Other"
+    "Other",
   ];
 
   const validateForm = () => {
@@ -65,25 +67,18 @@ function BookingPage() {
 
       setIsSubmitting(true);
 
-      const response = await axios.post(
-        "http://localhost:8000/api/booking/create",
-        {
-          panditId: id,   // ✅ from URL
-          date,
-          time,
-          address,
-          poojaType
-        },
-        {
-          withCredentials: true
-        }
-      );
-
+      const response = await createBooking({
+        panditId: id,
+        date,
+        time,
+        address,
+        poojaType,
+      });
+  
       if (response.status === 201) {
         showSuccess("Booking Confirmed! ✅ You will receive updates soon.");
         navigate("/my-bookings");
       }
-
     } catch (err) {
       console.error(err.response?.data || err.message);
       if (err.response?.status === 401) {
@@ -116,14 +111,16 @@ function BookingPage() {
       <div
         style={{
           background: "linear-gradient(135deg, #fff7f2, #fff)",
-          minHeight: "calc(100vh - 70px)"
+          minHeight: "calc(100vh - 70px)",
         }}
       >
         <div className="container py-5">
-          
           {/* Header */}
           <div className="text-center mb-5">
-            <h1 className="fw-bold mb-2" style={{ color: "#ff6b00", fontSize: "2.5rem" }}>
+            <h1
+              className="fw-bold mb-2"
+              style={{ color: "#ff6b00", fontSize: "2.5rem" }}
+            >
               🙏 Book Your Pandit
             </h1>
             <p className="text-muted" style={{ fontSize: "1.1rem" }}>
@@ -132,14 +129,13 @@ function BookingPage() {
           </div>
 
           <div className="row justify-content-center">
-            
             {/* Main Form Card */}
             <div className="col-lg-7 col-md-10">
               <div
                 className="card border-0 shadow-lg"
                 style={{
                   borderRadius: "20px",
-                  overflow: "hidden"
+                  overflow: "hidden",
                 }}
               >
                 {/* Card Header */}
@@ -147,16 +143,17 @@ function BookingPage() {
                   style={{
                     background: "linear-gradient(135deg, #ff6b00, #ff8533)",
                     padding: "30px",
-                    color: "white"
+                    color: "white",
                   }}
                 >
                   <h4 className="fw-bold mb-0">📋 Booking Details</h4>
-                  <p className="small mb-0 mt-2">Fill in all the details to confirm your booking</p>
+                  <p className="small mb-0 mt-2">
+                    Fill in all the details to confirm your booking
+                  </p>
                 </div>
 
                 {/* Card Body */}
                 <div className="p-4">
-                  
                   {/* Pooja Type */}
                   <div className="mb-4">
                     <label className="form-label fw-semibold mb-2">
@@ -171,7 +168,7 @@ function BookingPage() {
                       }}
                       style={{
                         borderColor: errors.poojaType ? "#dc3545" : "#dee2e6",
-                        borderWidth: errors.poojaType ? "2px" : ""
+                        borderWidth: errors.poojaType ? "2px" : "",
                       }}
                     >
                       <option value="">Select Pooja Type</option>
@@ -201,9 +198,9 @@ function BookingPage() {
                       }}
                       style={{
                         borderColor: errors.date ? "#dc3545" : "#dee2e6",
-                        borderWidth: errors.date ? "2px" : ""
+                        borderWidth: errors.date ? "2px" : "",
                       }}
-                      min={new Date().toISOString().split('T')[0]}
+                      min={new Date().toISOString().split("T")[0]}
                     />
                     {errors.date && (
                       <small className="text-danger">{errors.date}</small>
@@ -225,7 +222,7 @@ function BookingPage() {
                       }}
                       style={{
                         borderColor: errors.time ? "#dc3545" : "#dee2e6",
-                        borderWidth: errors.time ? "2px" : ""
+                        borderWidth: errors.time ? "2px" : "",
                       }}
                     />
                     {errors.time && (
@@ -236,7 +233,8 @@ function BookingPage() {
                   {/* Address */}
                   <div className="mb-4">
                     <label className="form-label fw-semibold mb-2">
-                      <span style={{ color: "#ff6b00" }}>📍</span> Location/Address
+                      <span style={{ color: "#ff6b00" }}>📍</span>{" "}
+                      Location/Address
                     </label>
                     <textarea
                       className="form-control form-control-lg"
@@ -249,7 +247,7 @@ function BookingPage() {
                       }}
                       style={{
                         borderColor: errors.address ? "#dc3545" : "#dee2e6",
-                        borderWidth: errors.address ? "2px" : ""
+                        borderWidth: errors.address ? "2px" : "",
                       }}
                     />
                     {errors.address && (
@@ -263,14 +261,18 @@ function BookingPage() {
                       className="alert border-0 mb-4"
                       style={{
                         background: "#fff7f2",
-                        borderLeft: "4px solid #ff6b00"
+                        borderLeft: "4px solid #ff6b00",
                       }}
                     >
                       <small className="d-block mb-2">
                         <strong>📋 Booking Summary:</strong>
                       </small>
-                      <small className="d-block">✓ {poojaType} on {date} at {time}</small>
-                      <small className="d-block">✓ Location: {address.substring(0, 40)}...</small>
+                      <small className="d-block">
+                        ✓ {poojaType} on {date} at {time}
+                      </small>
+                      <small className="d-block">
+                        ✓ Location: {address.substring(0, 40)}...
+                      </small>
                     </div>
                   )}
 
@@ -284,11 +286,12 @@ function BookingPage() {
                         background: "linear-gradient(135deg, #ff6b00, #ff8533)",
                         color: "white",
                         border: "none",
-                        transition: "0.3s"
+                        transition: "0.3s",
                       }}
                       onMouseOver={(e) => {
                         e.target.style.transform = "translateY(-2px)";
-                        e.target.style.boxShadow = "0 10px 25px rgba(255, 107, 0, 0.3)";
+                        e.target.style.boxShadow =
+                          "0 10px 25px rgba(255, 107, 0, 0.3)";
                       }}
                       onMouseOut={(e) => {
                         e.target.style.transform = "translateY(0)";
@@ -297,14 +300,18 @@ function BookingPage() {
                     >
                       {isSubmitting ? (
                         <>
-                          <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          <span
+                            className="spinner-border spinner-border-sm me-2"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
                           Processing...
                         </>
                       ) : (
                         "✅ Confirm Booking"
                       )}
                     </button>
-                    
+
                     <button
                       className="btn btn-outline-secondary btn-lg fw-semibold"
                       onClick={() => navigate(-1)}
@@ -312,7 +319,6 @@ function BookingPage() {
                       ← Back
                     </button>
                   </div>
-
                 </div>
               </div>
 
@@ -323,9 +329,15 @@ function BookingPage() {
                     className="text-center p-3 rounded"
                     style={{ background: "#fff7f2" }}
                   >
-                    <p className="mb-1" style={{ fontSize: "1.3rem" }}>⚡</p>
-                    <small className="fw-semibold text-dark">Instant Confirmation</small>
-                    <p className="small text-muted mb-0">Get updates within 24 hours</p>
+                    <p className="mb-1" style={{ fontSize: "1.3rem" }}>
+                      ⚡
+                    </p>
+                    <small className="fw-semibold text-dark">
+                      Instant Confirmation
+                    </small>
+                    <p className="small text-muted mb-0">
+                      Get updates within 24 hours
+                    </p>
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -333,16 +345,20 @@ function BookingPage() {
                     className="text-center p-3 rounded"
                     style={{ background: "#fff7f2" }}
                   >
-                    <p className="mb-1" style={{ fontSize: "1.3rem" }}>🔒</p>
-                    <small className="fw-semibold text-dark">Secure Payment</small>
-                    <p className="small text-muted mb-0">100% safe transaction</p>
+                    <p className="mb-1" style={{ fontSize: "1.3rem" }}>
+                      🔒
+                    </p>
+                    <small className="fw-semibold text-dark">
+                      Secure Payment
+                    </small>
+                    <p className="small text-muted mb-0">
+                      100% safe transaction
+                    </p>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </div>

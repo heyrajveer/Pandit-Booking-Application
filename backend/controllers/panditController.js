@@ -135,8 +135,8 @@ export const uploadPanditProfileImage = async (req, res) => {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
-
+    // const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    const imageUrl = `${process.env.BACKEND_URL}/uploads/${req.file.filename}`;
     const pandit = await Pandit.findOneAndUpdate(
       { userId: req.user.id },
       { profileImage: imageUrl },

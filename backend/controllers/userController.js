@@ -28,9 +28,8 @@ export const uploadUserProfileImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
-
     // const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
-    const imageUrl = `${process.env.BACKEND_URL}/uploads/${req.file.filename}`;  // for production and local both
+    const imageUrl = `${process.env.BACKEND_URL}/uploads/${req.file.filename}`; // production level pe backend URL use karna better hoga, env variable se lena chahiye
     const user = await User.findByIdAndUpdate(
       req.user.id,
       { profileImage: imageUrl },

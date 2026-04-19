@@ -65,7 +65,7 @@ function About() {
           </div>
           <div className="story-image">
             <img
-              src="https://www.shaadidukaan.com/user_files/d_p_images/14-2-b.jpg"
+              src="https://img.freepik.com/premium-photo/monk-sitting-temple-with-blurred-background-people-candles_927877-549.jpg"
               alt="Traditional ceremony"
             />
           </div>

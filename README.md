@@ -38,7 +38,7 @@ Pandit Dashboard
 ## Repository Structure
 
 - `backend/` — Express API server, routes, controllers, models, middleware, and database seeding
-- `frontend/` — React application, pages, components, API clients, and context logic
+- `frontend/` — React application, pages, compoments, API clients, and context logic
 
 ## Setup Instructions
 

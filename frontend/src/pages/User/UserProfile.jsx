@@ -71,7 +71,7 @@ const handleUpdate = async () => {
 
 return (
   <div style={{marginTop:"70px"}}>
-  <div className="bg-light" style={{height:"82vh" }}>
+  <div className="bg-light min-vh-100">
 
     {/* 🔝 Navbar */}
     <nav className="navbar navbar-dark bg-secondary px-4 shadow-sm">

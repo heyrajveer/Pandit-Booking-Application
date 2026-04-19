@@ -760,7 +760,6 @@
 .action-card-modern:nth-child(2) { animation-delay: 0.2s; }
 .action-card-modern:nth-child(3) { animation-delay: 0.3s; }
 .action-card-modern:nth-child(4) { animation-delay: 0.4s; }
-}
 
 @media (max-width: 576px) {
   .d-flex.justify-content-between.align-items-center {

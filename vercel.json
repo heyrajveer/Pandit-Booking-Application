@@ -1,15 +1,23 @@
 {
+  "routes": [
+    {
+      "src": "/_/backend/(.*)",
+      "dest": "/_/backend/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|svg|ico))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ],
   "experimentalServices": {
     "frontend": {
       "entrypoint": "frontend",
       "routePrefix": "/",
-      "framework": "vite",
-      "rewrites": [
-        {
-          "source": "/((?!.*\\.).*)",
-          "destination": "/"
-        }
-      ]
+      "framework": "vite"
     },
     "backend": {
       "entrypoint": "backend",

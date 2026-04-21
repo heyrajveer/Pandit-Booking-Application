@@ -1,17 +1,8 @@
 {
   "routes": [
-    {
-      "src": "/_/backend/(.*)",
-      "dest": "/_/backend/$1"
-    },
-    {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|svg|ico))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
+    { "src": "^/_/backend/(.*)", "dest": "/_/backend/$1" },
+    { "src": "^/(.*\\.(js|css|png|jpg|jpeg|svg|ico|json|map))$", "dest": "/$1" },
+    { "src": "^/(.*)", "dest": "/" }
   ],
   "experimentalServices": {
     "frontend": {

@@ -6,6 +6,17 @@ const API = axios.create({
   withCredentials: true,
 });
 
+// 🔥 ADD THIS (MAIN FIX)
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
 const refreshToken = async () => {
   return await API.get('/auth/refresh');
 };
@@ -23,7 +34,7 @@ const handleAuthError = async (error) => {
     try {
       await refreshToken();
       originalRequest.withCredentials = true;
-      return axios(originalRequest);
+      return API(originalRequest);
     } catch (refreshError) {
       localStorage.removeItem('user');
       window.location.href = '/auth';

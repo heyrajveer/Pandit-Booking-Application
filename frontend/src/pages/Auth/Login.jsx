@@ -38,6 +38,7 @@ function Login({ setIsLogin, from }) {
     try {
       const res = await loginUser(form);
       // ✅ store user only client side ke liye store kra he from cookies
+      localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       toast.success("Login successful ✅");

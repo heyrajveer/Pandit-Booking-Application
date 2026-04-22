@@ -8,6 +8,7 @@ export const getUserProfile = async (req,res)=>{
 
     }
     catch(err){
+      console.log("UPLOAD ERROR FULL:", err);
     res.status(500).json({message:err.message});
 
     }

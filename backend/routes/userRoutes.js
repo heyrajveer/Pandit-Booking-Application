@@ -11,12 +11,7 @@ const router = express.Router();
 
 router.get("/profile", verifyToken, getUserProfile);
 router.put("/profile", verifyToken, updateUserProfile);
-// router.post(
-//   "/upload-profile-image",
-//   verifyToken,
-//   upload.single("profileImage"),
-//   uploadUserProfileImage
-// );
+
 router.post(
   "/upload-profile-image",verifyToken,
   upload.single("profileImage"),

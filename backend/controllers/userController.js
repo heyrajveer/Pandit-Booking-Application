@@ -78,7 +78,7 @@ export const uploadUserProfileImage = async (req, res) => {
       { profileImage: imageUrl },
       { new: true }
     ).select("-password");
-
+   console.log("user:",user.profileImage);
     res.status(200).json(user);
 
   } catch (err) {

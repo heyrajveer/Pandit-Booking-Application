@@ -8,7 +8,6 @@ export const registerUser = async (data) => {
 export const loginUser = async (data) => {
   return await API.post("/auth/login", data);
 };
-
 export const logoutUser = async () => {
   return await API.post("/auth/logout");
 };

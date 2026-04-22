@@ -24,6 +24,7 @@ function UserProfile() {
       try {
         const res = await getUserProfile();
         setUser(res.data);
+        console.log(res.data);
         setPreviewImage(res.data.profileImage || "");
       } catch (err) {
         console.log(err);

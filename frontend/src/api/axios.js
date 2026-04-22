@@ -6,21 +6,23 @@ const API = axios.create({
   withCredentials: true,
 });
 
-// 🔥 ADD THIS (MAIN FIX)
+// ✅ Attach token safely
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
-  if (token) {
+  if (token && token !== "undefined") {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;
 });
 
+// 🔁 refresh token
 const refreshToken = async () => {
   return await API.get('/auth/refresh');
 };
 
+// ⚠️ handle 401
 const handleAuthError = async (error) => {
   const originalRequest = error.config;
 
@@ -31,12 +33,13 @@ const handleAuthError = async (error) => {
     !originalRequest.url?.includes('/auth/refresh')
   ) {
     originalRequest._retry = true;
+
     try {
       await refreshToken();
-      originalRequest.withCredentials = true;
+
       return API(originalRequest);
     } catch (refreshError) {
-      localStorage.removeItem('user');
+      localStorage.removeItem('token'); // ❗ fix here (not 'user')
       window.location.href = '/auth';
       return Promise.reject(refreshError);
     }
@@ -45,12 +48,8 @@ const handleAuthError = async (error) => {
   return Promise.reject(error);
 };
 
+// ✅ use only API interceptor
 API.interceptors.response.use(
-  (response) => response,
-  handleAuthError
-);
-
-axios.interceptors.response.use(
   (response) => response,
   handleAuthError
 );

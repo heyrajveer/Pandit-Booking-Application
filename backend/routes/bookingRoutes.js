@@ -15,6 +15,7 @@ router.post("/create", verifyToken, createBooking);
 // get all bookings
 router.get("/my-bookings", verifyToken, getBookings);
 
+router.get("/pandit-requests", verifyToken, getBookings);
 // user cancel booking
 router.patch("/:id/cancel", verifyToken, updateBookingStatus);
 

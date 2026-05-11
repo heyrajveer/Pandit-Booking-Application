@@ -3,19 +3,24 @@
 A full-stack ritual services management application built to connect users with trusted pandits for puja bookings and spiritual support.
 
 As project lead, I guided the application design, implemented the backend API, and delivered a polished frontend experience using modern JavaScript technologies.
-
 ## Screenshots
 
-Home Page  
+### Home Page
 ![Home Page](frontend/public/images/Home_page.png)
 
-Login Page  
+### Login Page
 ![Login Page](frontend/public/images/Login_Page.png)
 
-Pandit List  
-![Pandit List](frontend/public/images/pandit_lists.png)
+### Pandit List
+![Pandit List](frontend/public/images/panditList1.png)
 
-Pandit Dashboard  
+### User Dashboard
+![User Dashboard](frontend/public/images/usersDashboard.png)
+
+### User Bookings
+![User Bookings](frontend/public/images/userbookings.png)
+
+### Pandit Dashboard
 ![Pandit Dashboard](frontend/public/images/pandit_dashboard%20(1).png)
 
 ## Key Features

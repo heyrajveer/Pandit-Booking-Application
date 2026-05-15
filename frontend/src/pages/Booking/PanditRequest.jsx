@@ -5,6 +5,7 @@ import {
   panditBookingRequests,
   updateBookingStatus
 } from "../../api/bookingApi";
+import { canMarkBookingCompleted, formatBookingDate } from "../../utils/dateHelper";
 import "../../styles/Booking.css";
 
 function PanditRequest() {
@@ -165,6 +166,32 @@ function PanditRequest() {
                       >
                         <i className="fas fa-times me-1"></i>Reject
                       </button>
+                    </div>
+                  )}
+                  {b.status === "confirmed" && (() => {
+                    const result = canMarkBookingCompleted(b.date, b.status);
+                    console.log(`[PanditRequest] Booking for ${b.userId?.name}:`, result.debug);
+                    return result.canMark;
+                  })() && (
+                    <div className="d-flex gap-2 mt-3">
+                      <button
+                        className="btn btn-primary flex-fill"
+                        onClick={() => handleStatus(b._id, "completed")}
+                        title="Mark this pooja as completed"
+                      >
+                        <i className="fas fa-check-double me-1"></i>Mark Completed
+                      </button>
+                    </div>
+                  )}
+                  {b.status === "confirmed" && (() => {
+                    const result = canMarkBookingCompleted(b.date, b.status);
+                    return !result.canMark;
+                  })() && (
+                    <div className="alert alert-info mt-3 mb-0 py-2" role="alert">
+                      <small>
+                        <i className="fas fa-info-circle me-2"></i>
+                        Available to mark completed on {formatBookingDate(b.date)}
+                      </small>
                     </div>
                   )}
                 </div>

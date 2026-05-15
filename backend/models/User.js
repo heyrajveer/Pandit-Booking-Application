@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+
 const userSchema = new mongoose.Schema({
+
   name: {
     type: String,
     required: true
@@ -10,7 +12,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-     match: [
+    match: [
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
       "Please use a valid email address ❌",
     ],
@@ -19,7 +21,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 6,
+    minlength: [6, "Password must be at least 6 characters ❌"],
   },
 
   role: {
@@ -29,6 +31,7 @@ const userSchema = new mongoose.Schema({
   },
 
   city: String,
+
   phone: {
     type: String,
     required: true,
@@ -46,16 +49,30 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-// 🔥 ADD THIS HERE (NOT IN CONTROLLER)
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+// password hashing middleware
+userSchema.pre("save", async function () {
 
-  if (this.password.length < 6) {
-    return next(new Error("Password must be at least 6 characters ❌"));
+  try {
+
+    // console.log("Pre-save middleware running");
+
+    if (!this.isModified("password")) {
+      return;
+    }
+
+    this.password =
+      await bcrypt.hash(this.password, 10);
+
+    // console.log("Password hashed successfully");
+
+  } catch (error) {
+
+    // console.log("HASH ERROR:", error);
+
+    throw error;
   }
-
-  this.password = await bcrypt.hash(this.password, 10);
-
 });
+
 const User = mongoose.model("User", userSchema);
+
 export default User;

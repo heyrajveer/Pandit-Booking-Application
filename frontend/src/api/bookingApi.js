@@ -4,6 +4,9 @@ import API from "./axios";
 export const createBooking = (data) =>
   API.post("/booking/create", data);
 
+export const getPanditSlots = (panditId, date) =>
+  API.get(`/booking/slots/${panditId}?date=${encodeURIComponent(date)}`);
+
 // ✅ user bookings
 export const getMyBookings = () =>
   API.get("/booking/my-bookings");
@@ -19,3 +22,7 @@ export const updateBookingStatus = (id, status) =>
 // ✅ cancel booking (user side)
 export const cancelBookingApi = (id) =>
   API.patch(`/booking/${id}/cancel`, { status: "cancelled" });
+
+// ✅ update booking details
+export const updateBookingDetails = (id, data) =>
+  API.patch(`/booking/${id}/details`, data);

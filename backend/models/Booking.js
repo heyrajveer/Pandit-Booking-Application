@@ -32,10 +32,16 @@ const bookingSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["pending", "confirmed", "cancelled"],
+    enum: ["pending", "confirmed", "completed", "cancelled"],
     default: "pending"
   }
 }, { timestamps: true });
+
+// Ensure a pandit can only have one active booking per date and slot
+bookingSchema.index(
+  { panditId: 1, date: 1, time: 1 },
+  { unique: true, partialFilterExpression: { status: { $ne: "cancelled" } } }
+);
 
 // ✅ create modelst Booking
 const Booking = mongoose.model("Booking", bookingSchema);

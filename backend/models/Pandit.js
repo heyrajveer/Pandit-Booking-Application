@@ -36,6 +36,14 @@ const panditSchema = new mongoose.Schema({
   profileImage: {
     type: String,
     default: ""
+  },
+  averageRating: {
+    type: Number,
+    default: 0
+  },
+  ratingCount: {
+    type: Number,
+    default: 0
   }
 
 }, { timestamps: true });

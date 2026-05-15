@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { createBooking } from "../../api/bookingApi";
+import { createBooking, getPanditSlots } from "../../api/bookingApi";
 import { toast } from "react-toastify";
 import { showError, showSuccess } from "../../utils/alert";
 
@@ -32,10 +32,61 @@ function BookingPage() {
     setLoading(false);
   }, [navigate, id]);
 
+  const TIME_SLOTS = [
+    "08:00",
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+  ];
+
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [selectedSlot, setSelectedSlot] = useState("");
+  const [bookedSlots, setBookedSlots] = useState([]);
+  const [slotLoading, setSlotLoading] = useState(false);
+  const [slotError, setSlotError] = useState("");
   const [address, setAddress] = useState("");
   const [poojaType, setPoojaType] = useState("");
+
+  useEffect(() => {
+    if (!date) {
+      setBookedSlots([]);
+      setSelectedSlot("");
+      setTime("");
+      return;
+    }
+
+    const loadSlots = async () => {
+      setSlotLoading(true);
+      try {
+        const response = await getPanditSlots(id, date);
+        setBookedSlots(response.data.bookedSlots || []);
+        setSlotError("");
+
+        if (selectedSlot && response.data.bookedSlots?.includes(selectedSlot)) {
+          setSelectedSlot("");
+          setTime("");
+        }
+      } catch (err) {
+        console.error(err.response?.data || err.message);
+        setSlotError(
+          "Unable to load slot availability. Please try another date.",
+        );
+        setBookedSlots([]);
+      } finally {
+        setSlotLoading(false);
+      }
+    };
+
+    loadSlots();
+  }, [date, id]);
 
   const poojaOptions = [
     "Griha Pravesh",
@@ -61,7 +112,7 @@ function BookingPage() {
   const handleBooking = async () => {
     try {
       if (!validateForm()) {
-        showError.error("Please fill all required fields");
+        showError("Please fill all required fields");
         return;
       }
 
@@ -74,7 +125,7 @@ function BookingPage() {
         address,
         poojaType,
       });
-  
+
       if (response.status === 201) {
         showSuccess("Booking Confirmed! ✅ You will receive updates soon.");
         navigate("/my-bookings");
@@ -84,8 +135,16 @@ function BookingPage() {
       if (err.response?.status === 401) {
         toast.error("Please login to continue");
         navigate("/auth");
+      } else if (err.response?.status === 409) {
+        showError(
+          "Selected slot is already booked. Please choose a different time.",
+        );
       } else {
-        showError(err.response?.data?.error || "Booking Failed ❌");
+        showError(
+          err.response?.data?.message ||
+            err.response?.data?.error ||
+            "Booking Failed ❌",
+        );
       }
     } finally {
       setIsSubmitting(false);
@@ -194,7 +253,9 @@ function BookingPage() {
                       value={date}
                       onChange={(e) => {
                         setDate(e.target.value);
-                        setErrors({ ...errors, date: "" });
+                        setSelectedSlot("");
+                        setTime("");
+                        setErrors({ ...errors, date: "", time: "" });
                       }}
                       style={{
                         borderColor: errors.date ? "#dc3545" : "#dee2e6",
@@ -207,24 +268,53 @@ function BookingPage() {
                     )}
                   </div>
 
-                  {/* Time */}
+                  {/* Time Slot Selection */}
                   <div className="mb-4">
                     <label className="form-label fw-semibold mb-2">
-                      <span style={{ color: "#ff6b00" }}>⏰</span> Time
+                      <span style={{ color: "#ff6b00" }}>⏰</span> Time Slot
                     </label>
-                    <input
-                      type="time"
-                      className="form-control form-control-lg"
-                      value={time}
-                      onChange={(e) => {
-                        setTime(e.target.value);
-                        setErrors({ ...errors, time: "" });
-                      }}
-                      style={{
-                        borderColor: errors.time ? "#dc3545" : "#dee2e6",
-                        borderWidth: errors.time ? "2px" : "",
-                      }}
-                    />
+                    <div className="mb-2">
+                      {slotLoading ? (
+                        <div className="text-muted">
+                          Loading available slots...
+                        </div>
+                      ) : date ? (
+                        <div className="d-flex flex-wrap gap-2">
+                          {TIME_SLOTS.map((slot) => {
+                            const isBooked = bookedSlots.includes(slot);
+                            const isSelected = selectedSlot === slot;
+                            return (
+                              <button
+                                key={slot}
+                                type="button"
+                                className={`btn btn-sm ${isSelected ? "btn-primary" : isBooked ? "btn-outline-danger" : "btn-outline-success"}`}
+                                disabled={isBooked}
+                                onClick={() => {
+                                  setSelectedSlot(slot);
+                                  setTime(slot);
+                                  setErrors({ ...errors, time: "" });
+                                }}
+                                style={{ minWidth: "90px" }}
+                              >
+                                {slot}
+                                <div style={{ fontSize: "0.8rem" }}>
+                                  {isBooked ? "Booked" : "Available"}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <small className="text-muted">
+                          Choose a date to see available slots.
+                        </small>
+                      )}
+                    </div>
+                    {slotError && (
+                      <small className="text-danger d-block mb-1">
+                        {slotError}
+                      </small>
+                    )}
                     {errors.time && (
                       <small className="text-danger">{errors.time}</small>
                     )}

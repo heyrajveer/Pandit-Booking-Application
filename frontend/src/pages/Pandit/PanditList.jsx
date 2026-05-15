@@ -8,23 +8,32 @@ function PanditList() {
   const [pandits, setPandits] = useState([]);
   const [filteredPandits, setFilteredPandits] = useState([]);
   const [search, setSearch] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
   const [loading, setLoading] = useState(true);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const city = query.get("city");
+  const cityFromQuery = query.get("city");
   const navigate = useNavigate();
+
+  // Common cities for dropdown
+  const cities = ["Delhi", "Mumbai", "Bangalore", "Chennai", "Kolkata", "Pune", "Hyderabad", "Ahmedabad"];
+
+  useEffect(() => {
+    if (cityFromQuery && !selectedCity) {
+      setSelectedCity(cityFromQuery);
+    }
+  }, [cityFromQuery, selectedCity]);
 
   useEffect(() => {
     const fetchPandits = async () => {
       try {
         setLoading(true);
-        // const res = city ? await getPanditByCity(city) : await getAllPandits();
-        const res = city
-          ? await getPanditByCity(city, page, 10)
+        const res = selectedCity
+          ? await getPanditByCity(selectedCity, page, 10)
           : await getAllPandits(page, 10);
         const data = res.data.data || [];
-        setTotalPages(res.data.totalPages || 1); // KEEP THIS
+        setTotalPages(res.data.totalPages || 1);
         setPandits(data);
         setFilteredPandits(data);
       } catch (err) {
@@ -35,7 +44,7 @@ function PanditList() {
     };
 
     fetchPandits();
-  }, [city, page]);
+  }, [selectedCity, page]);
 
   // 🔍 Filter by services
   useEffect(() => {
@@ -107,6 +116,23 @@ function PanditList() {
         </div>
 
         <div className="row align-items-center mb-4">
+          <div className="col-md-4 mb-3 mb-md-0">
+            <select
+              className="form-select form-select-lg shadow-sm"
+              value={selectedCity}
+              onChange={(e) => {
+                setSelectedCity(e.target.value);
+                setPage(1); // Reset to page 1
+              }}
+            >
+              <option value="">All Cities</option>
+              {cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="col-md-8">
             <div className="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border border-white bg-white">
               <span
@@ -128,7 +154,7 @@ function PanditList() {
           <div className="col-md-4 text-md-end mt-3 mt-md-0">
             <span className="badge bg-light text-dark shadow-sm px-4 py-2">
               {filteredPandits?.length || 0 } available
-              {city ? ` in ${city}` : ""}
+              {selectedCity ? ` in ${selectedCity}` : ""}
             </span>
           </div>
         </div>
@@ -186,6 +212,13 @@ function PanditList() {
                     <h5 className="fw-semibold">
                       {p.userId?.name || "Pandit"}
                     </h5>
+
+                    <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
+                      <span className="text-warning fw-semibold">
+                        {p.averageRating?.toFixed(1) || "0.0"} ★
+                      </span>
+                      <small className="text-muted">({p.ratingCount || 0})</small>
+                    </div>
 
                     <p className="text-muted small">
                       {p.experience} experience

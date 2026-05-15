@@ -30,6 +30,7 @@ As project lead, I guided the application design, implemented the backend API, a
 - Booking creation and management for logged-in users
 - Pandit dashboard and profile handling
 - Contact form for support and inquiries
+- AI-powered chatbot for user assistance and real-time support
 - Seed data support for local development
 - Secure password hashing, JWT authentication, and file upload handling
 
@@ -104,17 +105,39 @@ As project lead, I guided the application design, implemented the backend API, a
 - `npm run preview` — preview the built frontend
 - `npm run lint` — run ESLint checks
 
+## Deployment Guide
+
+### Backend Deployment
+1. Choose a hosting platform (e.g., Heroku, Railway, Render, or AWS)
+2. Set environment variables in your hosting platform:
+   - `PORT` (usually set by platform)
+   - `MONGO_URI` (MongoDB Atlas or hosted database)
+   - `JWT_SECRET` (secure random string)
+   - `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS` (for email service)
+3. Deploy the backend code
+4. Ensure the database is accessible from the deployed server
+
+### Frontend Deployment
+1. Build the production version:
+   ```bash
+   npm run build
+   ```
+2. Deploy to a static hosting service (e.g., Vercel, Netlify, GitHub Pages)
+3. Update API base URL in `frontend/src/api/axios.js` to point to your deployed backend
+4. For Vercel deployment, the `vercel.json` file is already configured
+
+### Environment Configuration
+- Use environment variables for all sensitive data
+- Never commit `.env` files to version control
+- Test all features after deployment, especially email functionality and file uploads
+
 ## Notes
 
 - Ensure MongoDB is running locally or use a hosted MongoDB connection.
 - Keep `.env` values secret and never commit them to version control.
 - Update API base URLs in `frontend/src/api/axios.js` if the backend is hosted on a different origin.
+- For timezone-related issues, refer to `TIMEZONE_FIX_DOCUMENTATION.md`.
 
 ## Project Leadership
 
 This project is led by the core developer, responsible for architecture, implementation, and coordination across the backend and frontend layers.
-
----
-
-If you want, I can also add a short `Project Overview` section or generate a `Deployment` guide next.
-for User assistent i am creating chatbot
